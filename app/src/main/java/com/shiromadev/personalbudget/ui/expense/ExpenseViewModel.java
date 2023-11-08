@@ -1,16 +1,15 @@
-package com.shiromadev.personalbudget.ui.home;
+package com.shiromadev.personalbudget.ui.expense;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
-
+public class ExpenseViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public ExpenseViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is expense fragment");
     }
 
     public LiveData<String> getText() {

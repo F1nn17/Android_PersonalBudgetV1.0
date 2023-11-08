@@ -1,16 +1,15 @@
-package com.shiromadev.personalbudget.ui.slideshow;
+package com.shiromadev.personalbudget.ui.balance;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
-
+public class BalanceViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public BalanceViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is balance fragment");
     }
 
     public LiveData<String> getText() {

@@ -1,4 +1,4 @@
-package com.shiromadev.personalbudget.ui.home;
+package com.shiromadev.personalbudget.ui.income;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,22 +8,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.shiromadev.personalbudget.databinding.FragmentHomeBinding;
+import com.shiromadev.personalbudget.databinding.FragmentIncomeBinding;
 
-public class HomeFragment extends Fragment {
-
-    private FragmentHomeBinding binding;
+public class IncomeFragment extends Fragment {
+    private FragmentIncomeBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        IncomeViewModel incomeViewModel =
+                new ViewModelProvider(this).get(IncomeViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentIncomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textIncome;
+        incomeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
