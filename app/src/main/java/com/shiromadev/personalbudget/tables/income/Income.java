@@ -1,4 +1,4 @@
-package com.shiromadev.personalbudget;
+package com.shiromadev.personalbudget.tables.income;
 
 public class Income {
     private String name;

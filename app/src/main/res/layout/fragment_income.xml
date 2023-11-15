@@ -7,24 +7,33 @@
         android:layout_height="match_parent"
         tools:context=".ui.income.IncomeFragment">
 
-    <TableLayout android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/table_income"
-                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent">
-        <TableRow tools:ignore="UselessParent">
-            <TextView
-                    android:textSize="22sp"
-                    android:text="Name"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-            />
-            <TextView
-                    android:textSize="22sp"
-                    android:text="Money"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-            />
-        </TableRow>
-    </TableLayout>
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+        <TableLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                     android:id="@+id/table_income"
+                     android:scrollbarAlwaysDrawHorizontalTrack="false" android:scrollbarAlwaysDrawVerticalTrack="false"
+        >
+            <TableRow tools:ignore="UselessParent" android:orientation="vertical"
+                      android:overScrollMode="ifContentScrolls"
+                      android:scrollbars="vertical">
+                <TextView
+                        android:textSize="22sp"
+                        android:text="Name"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                />
+                <TextView
+                        android:textSize="22sp"
+                        android:text="Money"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
