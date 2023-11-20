@@ -30,6 +30,7 @@ public class BalanceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         balances = MainActivity.getBalances();
+        MainActivity.setFlag(flag);
         BalanceViewModel balanceViewModel =
                 new ViewModelProvider(this).get(BalanceViewModel.class);
 

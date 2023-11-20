@@ -29,6 +29,7 @@ public class ExpenseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         expenses = MainActivity.getExpenses();
+        MainActivity.setFlag(flag);
         ExpenseViewModel expenseViewModel =
                 new ViewModelProvider(this).get(ExpenseViewModel.class);
 

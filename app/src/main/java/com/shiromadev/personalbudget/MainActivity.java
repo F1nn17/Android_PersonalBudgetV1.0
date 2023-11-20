@@ -1,6 +1,6 @@
 package com.shiromadev.personalbudget;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -17,6 +17,7 @@ import com.shiromadev.personalbudget.gson.JSONHelper;
 import com.shiromadev.personalbudget.tables.balance.Balance;
 import com.shiromadev.personalbudget.tables.expense.Expense;
 import com.shiromadev.personalbudget.tables.income.Income;
+import com.shiromadev.personalbudget.ui.income.NewIncome;
 
 import java.util.ArrayList;
 
@@ -24,25 +25,26 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-
     private static ArrayList<Income> incomes = new ArrayList<>();
     private static ArrayList<Expense> expenses = new ArrayList<>();
     private static ArrayList<Balance> balances = new ArrayList<>();
-
 
     private int income = 0;
     private int expense = 0;
     private int balance = 0;
 
-    private String flag = "I";
+    private static String flag = "I";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("что-то происходит");
         loadData();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
+
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
                     case "I":
                         Snackbar.make(view, "Add Income", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+                        newIncome();
                         break;
                     case "E":
                         Snackbar.make(view, "Add Expense", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+                        newExpense();
                         break;
                 }
-
-                unLoadData();
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void loadData(){
+        System.out.println("Данные загружены");
         incomes = JSONHelper.importIncome(this);
         expenses = JSONHelper.importExpense(this);
         balances = JSONHelper.importBalance(this);
@@ -109,10 +112,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void addIncome(Income income){
+    public void newIncome() {
+        Intent intent = new Intent(this, NewIncome.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
+    public void newExpense() {
+//        Intent intent = new Intent(this, NewIncome.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        startActivity(intent);
+    }
+
+    public static void addIncome(Income income){
         incomes.add(income);
     }
 
+    public static void setFlag(String flagTable) {
+        flag = flagTable;
+    }
     public static ArrayList<Income> getIncomes() {
         return incomes;
     }

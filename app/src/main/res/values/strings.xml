@@ -10,4 +10,7 @@
     <string name="menu_income">Income</string>
     <string name="menu_expense">Expense</string>
     <string name="menu_balance">Balance</string>
+    <string name="addIncome">Добавить</string>
+    <string name="moneyIncome">Money +</string>
+    <string name="nameIncome">Name</string>
 </resources>
