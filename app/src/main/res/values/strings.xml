@@ -13,4 +13,6 @@
     <string name="addIncome">Добавить</string>
     <string name="moneyIncome">Money +</string>
     <string name="nameIncome">Name</string>
+    <string name="moneyExpense">Money -</string>
+    <string name="productExpense">Product</string>
 </resources>

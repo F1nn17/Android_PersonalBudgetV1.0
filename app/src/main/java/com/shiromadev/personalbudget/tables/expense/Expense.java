@@ -1,6 +1,8 @@
 package com.shiromadev.personalbudget.tables.expense;
 
-public class Expense {
+import java.io.Serializable;
+
+public class Expense implements Serializable {
     private String product;
     private int amount;
     private int money;

@@ -41,33 +41,57 @@ public class IncomeFragment extends Fragment {
     ArrayList<TextView> tableTextName = new ArrayList<>();
     ArrayList<TextView> tableTextMoney = new ArrayList<>();
     private void loadViewIncome(){
+        //create name and money view
+        tableRows.add(0, new TableRow(getContext()));
+        tableTextName.add(0, new TextView(getContext()));
+        tableTextName.get(0).setText("Name");
+        tableTextName.get(0).setTextSize(22);
+        tableTextName.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tableRows.get(0).addView(tableTextName.get(0), new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
+
+        tableTextMoney.add(0, new TextView(getContext()));
+        tableTextMoney.get(0).setText("Money");
+        tableTextMoney.get(0).setTextSize(22);
+        tableTextMoney.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tableRows.get(0).addView(tableTextMoney.get(0), new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
+
+        tableLayout.addView(tableRows.get(0));
+
         for(int i = 0 ; i < incomes.size(); i++){
-            tableRows.add(i, new TableRow(getContext()));
-            tableTextName.add(i, new TextView(getContext()));
-            tableTextName.get(i).setText(incomes.get(i).getName());
-            tableTextName.get(i).setTextSize(22);
-            tableTextName.get(i).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tableRows.get(i).addView(tableTextName.get(i), new TableRow.LayoutParams(
+            tableRows.add(i + 1, new TableRow(getContext()));
+            tableTextName.add(i + 1, new TextView(getContext()));
+            tableTextName.get(i + 1).setText(incomes.get(i).getName());
+            tableTextName.get(i + 1).setTextSize(22);
+            tableTextName.get(i + 1).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tableRows.get(i + 1).addView(tableTextName.get(i + 1), new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
 
-            tableTextMoney.add(i, new TextView(getContext()));
-            tableTextMoney.get(i).setText(String.valueOf(incomes.get(i).getMoney()));
-            tableTextMoney.get(i).setTextSize(22);
-            tableTextMoney.get(i).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tableRows.get(i).addView(tableTextMoney.get(i), new TableRow.LayoutParams(
+            tableTextMoney.add(i + 1, new TextView(getContext()));
+            tableTextMoney.get(i + 1).setText(String.valueOf(incomes.get(i).getMoney()));
+            tableTextMoney.get(i + 1).setTextSize(22);
+            tableTextMoney.get(i + 1).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tableRows.get(i + 1).addView(tableTextMoney.get(i + 1), new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
 
-            tableLayout.addView(tableRows.get(i));
+            tableLayout.addView(tableRows.get(i + 1));
         }
+    }
+
+    @Override
+    public void onResume() {
+        incomes = MainActivity.getIncomes();
+        MainActivity.setFlag(flag);
+        tableLayout = binding.tableIncome;
+        tableLayout.removeAllViews();
+        loadViewIncome();
+        super.onResume();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    public static void setIncomes(ArrayList<Income> income){
-        incomes = income;
     }
 }

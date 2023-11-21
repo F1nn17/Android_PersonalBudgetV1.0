@@ -37,7 +37,7 @@ public class ExpenseFragment extends Fragment {
         View root = binding.getRoot();
 
         tableLayout = binding.tableExpense;
-        loadViewIncome();
+        loadViewExpense();
         return root;
     }
 
@@ -45,32 +45,67 @@ public class ExpenseFragment extends Fragment {
     ArrayList<TextView> tableTextProduct = new ArrayList<>();
     ArrayList<TextView> tableTextAmount = new ArrayList<>();
     ArrayList<TextView> tableTextMoney = new ArrayList<>();
-    private void loadViewIncome(){
+
+    private void loadViewExpense() {
+        tableRows.add(0, new TableRow(getContext()));
+        tableTextProduct.add(0, new TextView(getContext()));
+        tableTextProduct.get(0).setText("Product");
+        tableTextProduct.get(0).setTextSize(22);
+        tableTextProduct.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tableRows.get(0).addView(tableTextProduct.get(0), new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
+
+        tableTextAmount.add(0, new TextView(getContext()));
+        tableTextAmount.get(0).setText("Amount");
+        tableTextAmount.get(0).setTextSize(22);
+        tableTextAmount.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tableRows.get(0).addView(tableTextAmount.get(0), new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.75f));
+
+        tableTextMoney.add(0, new TextView(getContext()));
+        tableTextMoney.get(0).setText("Money");
+        tableTextMoney.get(0).setTextSize(22);
+        tableTextMoney.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tableRows.get(0).addView(tableTextMoney.get(0), new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
+
+        tableLayout.addView(tableRows.get(0));
+
         for(int i = 0 ; i < expenses.size(); i++){
-            tableRows.add(i, new TableRow(getContext()));
-            tableTextProduct.add(i, new TextView(getContext()));
-            tableTextProduct.get(i).setText(expenses.get(i).getProduct());
-            tableTextProduct.get(i).setTextSize(22);
-            tableTextProduct.get(i).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tableRows.get(i).addView(tableTextProduct.get(i), new TableRow.LayoutParams(
+            tableRows.add(i + 1, new TableRow(getContext()));
+            tableTextProduct.add(i + 1, new TextView(getContext()));
+            tableTextProduct.get(i + 1).setText(expenses.get(i).getProduct());
+            tableTextProduct.get(i + 1).setTextSize(22);
+            tableTextProduct.get(i + 1).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tableRows.get(i + 1).addView(tableTextProduct.get(i + 1), new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
 
-            tableTextAmount.add(i, new TextView(getContext()));
-            tableTextAmount.get(i).setText(String.valueOf(expenses.get(i).getAmount()));
-            tableTextAmount.get(i).setTextSize(22);
-            tableTextAmount.get(i).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tableRows.get(i).addView(tableTextAmount.get(i), new TableRow.LayoutParams(
+            tableTextAmount.add(i + 1, new TextView(getContext()));
+            tableTextAmount.get(i + 1).setText(String.valueOf(expenses.get(i).getAmount()));
+            tableTextAmount.get(i + 1).setTextSize(22);
+            tableTextAmount.get(i + 1).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tableRows.get(i + 1).addView(tableTextAmount.get(i + 1), new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.75f));
 
-            tableTextMoney.add(i, new TextView(getContext()));
-            tableTextMoney.get(i).setText(String.valueOf(expenses.get(i).getMoney()));
-            tableTextMoney.get(i).setTextSize(22);
-            tableTextMoney.get(i).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tableRows.get(i).addView(tableTextMoney.get(i), new TableRow.LayoutParams(
+            tableTextMoney.add(i + 1, new TextView(getContext()));
+            tableTextMoney.get(i + 1).setText(String.valueOf(expenses.get(i).getMoney()));
+            tableTextMoney.get(i + 1).setTextSize(22);
+            tableTextMoney.get(i + 1).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tableRows.get(i + 1).addView(tableTextMoney.get(i + 1), new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
 
-            tableLayout.addView(tableRows.get(i));
+            tableLayout.addView(tableRows.get(i + 1));
         }
+    }
+
+    @Override
+    public void onResume() {
+        expenses = MainActivity.getExpenses();
+        MainActivity.setFlag(flag);
+        tableLayout = binding.tableExpense;
+        tableLayout.removeAllViews();
+        loadViewExpense();
+        super.onResume();
     }
 
     @Override
