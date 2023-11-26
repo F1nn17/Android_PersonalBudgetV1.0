@@ -23,4 +23,6 @@ public class Expense implements Serializable {
         return this.money;
     }
 
+    public void setMoney(int value){this.money = value;}
+    public void setAmount(int value){this.amount = value;}
 }

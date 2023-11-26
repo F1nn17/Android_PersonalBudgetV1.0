@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.shiromadev.personalbudget.MainActivity;
+import com.shiromadev.personalbudget.R;
 import com.shiromadev.personalbudget.databinding.FragmentExpenseBinding;
 import com.shiromadev.personalbudget.tables.expense.Expense;
 import com.shiromadev.personalbudget.tables.income.Income;
@@ -49,21 +50,21 @@ public class ExpenseFragment extends Fragment {
     private void loadViewExpense() {
         tableRows.add(0, new TableRow(getContext()));
         tableTextProduct.add(0, new TextView(getContext()));
-        tableTextProduct.get(0).setText("Product");
+        tableTextProduct.get(0).setText(getResources().getString(R.string.table_product_expense));
         tableTextProduct.get(0).setTextSize(22);
         tableTextProduct.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tableRows.get(0).addView(tableTextProduct.get(0), new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
 
         tableTextAmount.add(0, new TextView(getContext()));
-        tableTextAmount.get(0).setText("Amount");
+        tableTextAmount.get(0).setText(getResources().getString(R.string.table_amount_expense));
         tableTextAmount.get(0).setTextSize(22);
         tableTextAmount.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tableRows.get(0).addView(tableTextAmount.get(0), new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.75f));
 
         tableTextMoney.add(0, new TextView(getContext()));
-        tableTextMoney.get(0).setText("Money");
+        tableTextMoney.get(0).setText(getResources().getString(R.string.table_money_expense));
         tableTextMoney.get(0).setTextSize(22);
         tableTextMoney.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tableRows.get(0).addView(tableTextMoney.get(0), new TableRow.LayoutParams(

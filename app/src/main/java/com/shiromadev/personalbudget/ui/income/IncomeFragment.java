@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.shiromadev.personalbudget.R;
 import com.shiromadev.personalbudget.tables.income.Income;
 import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.databinding.FragmentIncomeBinding;
@@ -44,14 +45,14 @@ public class IncomeFragment extends Fragment {
         //create name and money view
         tableRows.add(0, new TableRow(getContext()));
         tableTextName.add(0, new TextView(getContext()));
-        tableTextName.get(0).setText("Name");
+        tableTextName.get(0).setText(getResources().getString(R.string.table_name_income));
         tableTextName.get(0).setTextSize(22);
         tableTextName.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tableRows.get(0).addView(tableTextName.get(0), new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
 
         tableTextMoney.add(0, new TextView(getContext()));
-        tableTextMoney.get(0).setText("Money");
+        tableTextMoney.get(0).setText(getResources().getString(R.string.table_money_income));
         tableTextMoney.get(0).setTextSize(22);
         tableTextMoney.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         tableRows.get(0).addView(tableTextMoney.get(0), new TableRow.LayoutParams(

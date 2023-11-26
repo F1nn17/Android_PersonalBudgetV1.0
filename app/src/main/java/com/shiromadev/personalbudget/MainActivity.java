@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -24,6 +25,7 @@ import com.shiromadev.personalbudget.tables.expense.Expense;
 import com.shiromadev.personalbudget.tables.income.Income;
 import com.shiromadev.personalbudget.ui.expense.NewExpense;
 import com.shiromadev.personalbudget.ui.income.NewIncome;
+import com.shiromadev.personalbudget.ui.settings.SettingsActivity;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 newIncome = (Income) intent.getSerializableExtra(NEW_INCOME);
                             }
-                            incomes.add(newIncome);
+                            SearchElement(newIncome);
                         }
                         if (Objects.equals(flag, "E")) {
                             Expense newExpense;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 newExpense = (Expense) intent.getSerializableExtra(NEW_EXPENSE);
                             }
-                            expenses.add(newExpense);
+                            SearchElement(newExpense);
                         }
                         unLoadData();
                         updateBalance();
@@ -179,6 +181,42 @@ public class MainActivity extends AppCompatActivity {
         mStartForResult.launch(intent);
     }
 
+    static void SearchElement(Income value){
+        boolean be = false;
+        int index = 0;
+        for(int i = 0; i < incomes.size(); i++){
+            if(Objects.equals(incomes.get(i).getName(), value.getName())){
+                be = true;
+                index = i;
+                break;
+            }
+        }
+        if(be){
+            incomes.get(index).setMoney(incomes.get(index).getMoney()+value.getMoney());
+        }
+        else {
+            incomes.add(value);
+        }
+    }
+    static void SearchElement(Expense value){
+        boolean be = false;
+        int index = 0;
+        for(int i = 0; i < expenses.size(); i++){
+            if(Objects.equals(expenses.get(i).getProduct(), value.getProduct())){
+                be = true;
+                index = i;
+                break;
+            }
+        }
+        if(be){
+            expenses.get(index).setMoney(expenses.get(index).getMoney() + value.getMoney());
+            expenses.get(index).setAmount(expenses.get(index).getAmount()+1);
+        }
+        else {
+            expenses.add(value);
+        }
+    }
+
     void BalanceIncome() {
         if (incomes != null) {
             income = 0;
@@ -238,5 +276,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         unLoadData();
         super.onStop();
+    }
+
+    public void SettingView(MenuItem item) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }

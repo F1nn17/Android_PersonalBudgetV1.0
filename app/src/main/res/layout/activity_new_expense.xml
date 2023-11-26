@@ -13,19 +13,20 @@
             <TextView android:textSize="22sp"
                       android:text=""
                       android:layout_width="200dp"
-                      android:layout_height="wrap_content"
+                      android:layout_height="match_parent"
                       android:textAlignment="center"/>
         </TableRow>
         <TableRow>
             <TextView android:textSize="22sp"
                       android:text="@string/productExpense"
                       android:layout_width="200dp"
-                      android:layout_height="wrap_content"
+                      android:layout_height="match_parent"
                       android:textAlignment="center"/>
             <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
                     android:inputType="text"
+                    android:text="@string/et_name_product"
                     android:ems="10"
                     android:id="@+id/productExpense"
                     android:textAlignment="center"
@@ -35,13 +36,13 @@
             <TextView android:textSize="22sp"
                       android:text="@string/moneyExpense"
                       android:layout_width="200dp"
-                      android:layout_height="wrap_content"
+                      android:layout_height="match_parent"
                       android:textAlignment="center"/>
             <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
                     android:inputType="text"
-                    android:text=""
+                    android:text="@string/et_money_product"
                     android:ems="10"
                     android:id="@+id/moneyExpense"
                     android:textAlignment="center"
