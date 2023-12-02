@@ -13,14 +13,12 @@
             android:theme="@style/Theme.PersonalBudget"
             tools:targetApi="31">
         <activity
-                android:name=".ui.settings.SettingsActivity"
-                android:exported="false"
-                android:label="@string/title_activity_settings"/>
-        <activity
                 android:name=".ui.expense.NewExpense"
+                android:label="@string/New_Expense"
                 android:exported="false"/>
         <activity
                 android:name=".ui.income.NewIncome"
+                android:label="@string/New_Income"
                 android:exported="false"/>
         <activity
                 android:name=".MainActivity"

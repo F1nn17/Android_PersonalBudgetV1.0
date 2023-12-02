@@ -17,7 +17,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.shiromadev.personalbudget.databinding.ActivityMainBinding;
 import com.shiromadev.personalbudget.gson.JSONHelper;
 import com.shiromadev.personalbudget.tables.balance.Balance;
@@ -25,7 +24,6 @@ import com.shiromadev.personalbudget.tables.expense.Expense;
 import com.shiromadev.personalbudget.tables.income.Income;
 import com.shiromadev.personalbudget.ui.expense.NewExpense;
 import com.shiromadev.personalbudget.ui.income.NewIncome;
-import com.shiromadev.personalbudget.ui.settings.SettingsActivity;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         unLoadData();
                         updateBalance();
                     } else {
-                        System.out.println("Ошибка получения!");
+                        System.out.println("Error receiving!");
                     }
                 }
             });
@@ -118,10 +116,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static int getBalance() {
-        return balance;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +134,20 @@ public class MainActivity extends AppCompatActivity {
         Months.put(12, "Декабрь");
 
         loadData();
+
+        if (balances.size() >= 2)
+        {
+            if (!Objects.equals(Months.get(month), balances.get(balances.size() - 2).getMonth()))
+            {
+                incomes.clear();
+                expenses.clear();
+                Income pastBalance = new Income(getResources().getString(R.string.previous_month),  balances.get(balances.size() - 2).getBalance());
+                incomes.add(pastBalance);
+                updateBalance();
+                unLoadData();
+            }
+        }
+
         updateBalance();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -279,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SettingView(MenuItem item) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, SettingsActivity.class);
+//        startActivity(intent);
     }
 }

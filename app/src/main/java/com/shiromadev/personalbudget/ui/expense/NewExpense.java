@@ -24,9 +24,10 @@ public class NewExpense extends AppCompatActivity {
 
     public void AddExpense(View view) {
 
-        String name = nameEditText.getText().toString();
+        String inpName = nameEditText.getText().toString();
+        String outName = inpName.substring(0, 1).toUpperCase() + inpName.substring(1);
         int money = Integer.parseInt(moneyEditText.getText().toString());
-        Expense expense = new Expense(name, 1, money);
+        Expense expense = new Expense(outName, 1, money);
 
         Intent data = new Intent();
         data.putExtra(MainActivity.NEW_EXPENSE, expense);
