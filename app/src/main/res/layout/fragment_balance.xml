@@ -32,7 +32,7 @@
                         android:text="@string/table_balance_balance"
                         android:layout_width="205sp"
                         android:layout_height="match_parent"
-                        android:textAlignment="center"
+                        android:textAlignment="viewStart"
                 />
             </TableRow>
         </TableLayout>

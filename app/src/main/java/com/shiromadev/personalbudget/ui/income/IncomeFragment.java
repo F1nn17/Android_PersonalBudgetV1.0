@@ -23,7 +23,7 @@ public class IncomeFragment extends Fragment {
 
    private TableLayout tableLayout;
 
-    private String flag = "I";
+    private final String flag = "I";
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         incomes = MainActivity.getIncomes();

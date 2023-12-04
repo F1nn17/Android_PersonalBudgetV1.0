@@ -25,7 +25,7 @@ public class ExpenseFragment extends Fragment {
 
     private TableLayout tableLayout;
 
-    private String flag = "E";
+    private final String flag = "E";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

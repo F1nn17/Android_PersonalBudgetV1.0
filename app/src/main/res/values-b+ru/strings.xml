@@ -29,9 +29,11 @@
     <string name="nameIncome">Имя</string>
     <string name="moneyExpense">Деньги -</string>
     <string name="productExpense">Продукт</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Настройки</string>
 
     <string name="et_name_product"> </string>
     <string name="et_money_product"> </string>
+    <string name="DataTables">Данные таблиц</string>
+    <string name="ButtonClearDataTables">Удалить данные таблиц</string>
 
 </resources>

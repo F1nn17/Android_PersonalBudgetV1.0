@@ -25,11 +25,10 @@ public class BalanceFragment extends Fragment {
 
     private TableLayout tableLayout;
 
-    private String flag = "B";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         balances = MainActivity.getBalances();
+        String flag = "B";
         MainActivity.setFlag(flag);
         BalanceViewModel balanceViewModel =
                 new ViewModelProvider(this).get(BalanceViewModel.class);
@@ -37,10 +36,7 @@ public class BalanceFragment extends Fragment {
         binding = FragmentBalanceBinding.inflate(inflater, container, false);
         tableLayout = binding.tableBalance;
         loadViewIncome();
-        View root = binding.getRoot();
-
-
-        return root;
+        return binding.getRoot();
     }
 
     ArrayList<TableRow> tableRows = new ArrayList<>();
@@ -59,7 +55,7 @@ public class BalanceFragment extends Fragment {
             tableTextMoney.add(i, new TextView(getContext()));
             tableTextMoney.get(i).setText(String.valueOf(balances.get(i).getBalance()));
             tableTextMoney.get(i).setTextSize(22);
-            tableTextMoney.get(i).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tableTextMoney.get(i).setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             tableRows.get(i).addView(tableTextMoney.get(i), new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
 

@@ -24,6 +24,7 @@ import com.shiromadev.personalbudget.tables.expense.Expense;
 import com.shiromadev.personalbudget.tables.income.Income;
 import com.shiromadev.personalbudget.ui.expense.NewExpense;
 import com.shiromadev.personalbudget.ui.income.NewIncome;
+import com.shiromadev.personalbudget.ui.settings.SettingActivity;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -287,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SettingView(MenuItem item) {
-//        Intent intent = new Intent(this, SettingsActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, SettingActivity.class);
+        startActivity(intent);
     }
 }

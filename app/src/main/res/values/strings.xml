@@ -29,9 +29,11 @@
     <string name="nameIncome">Name</string>
     <string name="moneyExpense">Money -</string>
     <string name="productExpense">Product</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings</string>
 
     <string name="et_name_product"> </string>
     <string name="et_money_product"> </string>
+    <string name="DataTables">Data Tables</string>
+    <string name="ButtonClearDataTables">Clear Data Tables</string>
 
 </resources>
