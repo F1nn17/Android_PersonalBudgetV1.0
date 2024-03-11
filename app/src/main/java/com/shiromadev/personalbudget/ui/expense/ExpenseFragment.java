@@ -75,7 +75,7 @@ public class ExpenseFragment extends Fragment {
         for(int i = 0 ; i < expenses.size(); i++){
             tableRows.add(i + 1, new TableRow(getContext()));
             tableTextProduct.add(i + 1, new TextView(getContext()));
-            tableTextProduct.get(i + 1).setText(expenses.get(i).getProduct());
+            tableTextProduct.get(i + 1).setText(expenses.get(i).getName());
             tableTextProduct.get(i + 1).setTextSize(22);
             tableTextProduct.get(i + 1).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             tableRows.get(i + 1).addView(tableTextProduct.get(i + 1), new TableRow.LayoutParams(

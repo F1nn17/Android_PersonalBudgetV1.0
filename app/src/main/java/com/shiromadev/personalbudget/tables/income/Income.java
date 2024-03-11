@@ -1,27 +1,14 @@
 package com.shiromadev.personalbudget.tables.income;
 
-import java.io.Serializable;
+import com.shiromadev.personalbudget.tables.Tables;
 
-public class Income implements Serializable {
-    private String name;
-    private int money;
+public class Income extends Tables {
 
-    public Income() {}
+    public Income() {
+        super("", 0);
+    }
     public Income(String name, int money){
-        this.name = name;
-        this.money = money;
+        super(name, money);
     }
-
-    public String getName(){
-        return this.name;
-    }
-    public int getMoney(){
-        return this.money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
 
 }

@@ -138,11 +138,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (balances.size() >= 2)
         {
-            if (!Objects.equals(Months.get(month), balances.get(balances.size() - 2).getMonth()))
+            if (!Objects.equals(Months.get(month), balances.get(balances.size() - 2).getName()))
             {
                 incomes.clear();
                 expenses.clear();
-                Income pastBalance = new Income(getResources().getString(R.string.previous_month),  balances.get(balances.size() - 2).getBalance());
+                Income pastBalance = new Income(getResources().getString(R.string.previous_month),  balances.get(balances.size() - 2).getMoney());
                 incomes.add(pastBalance);
                 updateBalance();
                 unLoadData();
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         boolean be = false;
         int index = 0;
         for(int i = 0; i < expenses.size(); i++){
-            if(Objects.equals(expenses.get(i).getProduct(), value.getProduct())){
+            if(Objects.equals(expenses.get(i).getName(), value.getName())){
                 be = true;
                 index = i;
                 break;
@@ -265,14 +265,14 @@ public class MainActivity extends AppCompatActivity {
             boolean be = false;
             int index = 0;
             for (int i = 0; i < balances.size(); i++) {
-                if (Objects.equals(balances.get(i).getMonth(), Months.get(month))) {
+                if (Objects.equals(balances.get(i).getName(), Months.get(month))) {
                     be = true;
                     index = i;
                     break;
                 }
             }
             if (be) {
-                balances.get(index).setBalance(balance);
+                balances.get(index).setMoney(balance);
             } else {
                 balances.add(new Balance(Months.get(month), balance));
             }
