@@ -19,9 +19,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.shiromadev.personalbudget.databinding.ActivityMainBinding;
 import com.shiromadev.personalbudget.gson.JSONHelper;
-import com.shiromadev.personalbudget.tables.balance.Balance;
-import com.shiromadev.personalbudget.tables.expense.Expense;
-import com.shiromadev.personalbudget.tables.income.Income;
+import com.shiromadev.personalbudget.tables.TableItems;
+import com.shiromadev.personalbudget.tables.TableList;
 import com.shiromadev.personalbudget.ui.expense.NewExpense;
 import com.shiromadev.personalbudget.ui.income.NewIncome;
 import com.shiromadev.personalbudget.ui.settings.SettingActivity;
@@ -29,131 +28,75 @@ import com.shiromadev.personalbudget.ui.settings.SettingActivity;
 import java.time.LocalDateTime;
 import java.util.*;
 
+enum Months{
+    Search(0, ""),
+    Jan(1, "Январь"),
+    Feb(2, "Февраль"),
+    March(3, "Март"),
+    Apr(4, "Апрель"),
+    May(5, "Мая"),
+    June(6, "Июнь"),
+    Jule(7, "Июль"),
+    Aug(8, "Август"),
+    Sept(9, "Сентябрь"),
+    Oct(10, "Октябрь"),
+    Nov(11, "Ноябрь"),
+    Dec(12, "Декабрь");
+    private final int id;
+    private final String month;
+
+    Months(int id, String month){
+        this.id = id;
+        this.month = month;
+    }
+
+    private int getId(){return id;}
+    String getMonth(int id){
+        for (Months m:Months.values()) {
+            System.out.println(m.id);
+            if(m.id == id){
+                System.out.println("good");
+                return m.month;
+            }
+        }
+        return null;
+    }
+}
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-    private static ArrayList<Income> incomes = new ArrayList<>();
-    private static ArrayList<Expense> expenses = new ArrayList<>();
-    private static ArrayList<Balance> balances = new ArrayList<>();
-
-    private int income = 0;
-    private int expense = 0;
+    private static TableList incomeList = new TableList();
+    private static TableList expenseList = new TableList();
+    private static TableList balanceList = new TableList();
     public static final String NEW_INCOME = "NEW_INCOME";
-
     private static String flag = "I";
     public static final String NEW_EXPENSE = "NEW_EXPENSE";
-    private static int balance = 0;
     LocalDateTime date = LocalDateTime.now();
-    int month = date.getMonthValue();
-    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent intent = result.getData();
-                        if (Objects.equals(flag, "I")) {
-                            Income newIncome;
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                                assert intent != null;
-                                newIncome = intent.getSerializableExtra(NEW_INCOME, Income.class);
-                            } else {
-                                newIncome = (Income) intent.getSerializableExtra(NEW_INCOME);
-                            }
-                            SearchElement(newIncome);
-                        }
-                        if (Objects.equals(flag, "E")) {
-                            Expense newExpense;
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                                assert intent != null;
-                                newExpense = intent.getSerializableExtra(NEW_EXPENSE, Expense.class);
-                            } else {
-                                newExpense = (Expense) intent.getSerializableExtra(NEW_EXPENSE);
-                            }
-                            SearchElement(newExpense);
-                        }
-                        unLoadData();
-                        updateBalance();
-                    } else {
-                        System.out.println("Error receiving!");
-                    }
-                }
-            });
-    HashMap<Integer, String> Months = new HashMap<>();
+    int month = date.getMonthValue(); //current month
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
-
-    public void loadData(){
-        System.out.println("Данные загружены");
-        incomes = JSONHelper.importIncome(this);
-        expenses = JSONHelper.importExpense(this);
-        balances = JSONHelper.importBalance(this);
-    }
-
-    public void unLoadData(){
-        boolean resultIncome = JSONHelper.exportIncome(this,incomes);
-        boolean resultExpense = JSONHelper.exportExpense(this,expenses);
-        boolean resultBalance = JSONHelper.exportBalance(this,balances);
-        if(resultIncome){
-            System.out.println("Данные Income сохранены!");
-        }
-        if(resultExpense){
-            System.out.println("Данные Expense сохранены!");
-        }
-        if(resultBalance){
-            System.out.println("Данные Balance сохранены!");
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Months.put(1, "Январь");
-        Months.put(2, "Февраль");
-        Months.put(3, "Март");
-        Months.put(4, "Апрель");
-        Months.put(5, "Май");
-        Months.put(6, "Июнь");
-        Months.put(7, "Июль");
-        Months.put(8, "Август");
-        Months.put(9, "Сентябрь");
-        Months.put(10, "Октябрь");
-        Months.put(11, "Ноябрь");
-        Months.put(12, "Декабрь");
-
         loadData();
-
-        if (balances.size() >= 2)
+        if (balanceList.size() >= 2)
         {
-            if (!Objects.equals(Months.get(month), balances.get(balances.size() - 2).getName()))
+            if (!Objects.equals(Months.Search.getMonth(month), balanceList.get(balanceList.size() - 2).getName()))
             {
-                incomes.clear();
-                expenses.clear();
-                Income pastBalance = new Income(getResources().getString(R.string.previous_month),  balances.get(balances.size() - 2).getMoney());
-                incomes.add(pastBalance);
+                incomeList.clear();
+                expenseList.clear();
+                TableItems pastBalance = new TableItems(getResources().getString(R.string.previous_month),  balanceList.get(balanceList.size() - 2).getMoney());
+                incomeList.add(pastBalance);
                 updateBalance();
                 unLoadData();
             }
         }
-
         updateBalance();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
-
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,6 +123,75 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
+    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        if (Objects.equals(flag, "I")) {
+                            TableItems newIncome;
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                                assert intent != null;
+                                newIncome = intent.getSerializableExtra(NEW_INCOME, TableItems.class);
+                            } else {
+                                newIncome = (TableItems) intent.getSerializableExtra(NEW_INCOME);
+                            }
+                            incomeList.add(newIncome);
+                        }
+                        if (Objects.equals(flag, "E")) {
+                            TableItems newExpense;
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                                assert intent != null;
+                                newExpense = intent.getSerializableExtra(NEW_EXPENSE, TableItems.class);
+                            } else {
+                                newExpense = (TableItems) intent.getSerializableExtra(NEW_EXPENSE);
+                            }
+                           expenseList.add(newExpense);
+                        }
+                        updateBalance();
+                        unLoadData();
+                    } else {
+                        System.out.println("Error receiving!");
+                    }
+                }
+            });
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
+    public void loadData(){
+        incomeList = JSONHelper.Import(this, "Income.json", incomeList);
+        expenseList = JSONHelper.Import(this, "Expense.json", expenseList);
+        balanceList =  JSONHelper.Import(this, "Balance.json", balanceList);
+        System.out.println("Данные загружены!");
+    }
+
+    public void unLoadData(){
+        boolean resultIncome = JSONHelper.Export(this, "Income.json", incomeList);
+        boolean resultExpense = JSONHelper.Export(this, "Expense.json", expenseList);
+        boolean resultBalance = JSONHelper.Export(this, "Balance.json", balanceList);
+        if(resultIncome){
+            System.out.println("Данные Income сохранены!");
+        }
+        if(resultExpense){
+            System.out.println("Данные Expense сохранены!");
+        }
+        if(resultBalance){
+            System.out.println("Данные Balance сохранены!");
+        }
+    }
+
     public void newIncome() {
         Intent intent = new Intent(this, NewIncome.class);
         mStartForResult.launch(intent);
@@ -190,96 +202,52 @@ public class MainActivity extends AppCompatActivity {
         mStartForResult.launch(intent);
     }
 
-    static void SearchElement(Income value){
-        boolean be = false;
-        int index = 0;
-        for(int i = 0; i < incomes.size(); i++){
-            if(Objects.equals(incomes.get(i).getName(), value.getName())){
-                be = true;
-                index = i;
-                break;
-            }
-        }
-        if(be){
-            incomes.get(index).setMoney(incomes.get(index).getMoney()+value.getMoney());
-        }
-        else {
-            incomes.add(value);
-        }
-    }
-    static void SearchElement(Expense value){
-        boolean be = false;
-        int index = 0;
-        for(int i = 0; i < expenses.size(); i++){
-            if(Objects.equals(expenses.get(i).getName(), value.getName())){
-                be = true;
-                index = i;
-                break;
-            }
-        }
-        if(be){
-            expenses.get(index).setMoney(expenses.get(index).getMoney() + value.getMoney());
-            expenses.get(index).setAmount(expenses.get(index).getAmount()+1);
-        }
-        else {
-            expenses.add(value);
-        }
-    }
-
-    void BalanceIncome() {
-        if (incomes != null) {
-            income = 0;
-            for (Income value : incomes) {
-                income += value.getMoney();
-            }
-        }
-    }
-
-    void BalanceExpense() {
-        if (expenses != null) {
-            expense = 0;
-            for (Expense value : expenses) {
-                expense += value.getMoney();
-            }
-        }
-    }
-
     public static void setFlag(String flagTable) {
         flag = flagTable;
     }
-    public static ArrayList<Income> getIncomes() {
-        return incomes;
-    }
-    public static ArrayList<Expense> getExpenses() {
-        return expenses;
-    }
-    public static ArrayList<Balance> getBalances() {
-        return balances;
-    }
 
     void updateBalance() {
-        BalanceIncome();
-        BalanceExpense();
-        balance = income - expense;
-        if (balances != null) {
-            boolean be = false;
-            int index = 0;
-            for (int i = 0; i < balances.size(); i++) {
-                if (Objects.equals(balances.get(i).getName(), Months.get(month))) {
-                    be = true;
-                    index = i;
-                    break;
+        try {
+            int income = incomeList.sum();
+            int expense = expenseList.sum();
+            int balance = income - expense;
+            if (balanceList.size() != 0) {
+                boolean be = false;
+                int index = 0;
+                for (int i = 0; i < balanceList.size(); i++) {
+                    if (Objects.equals(balanceList.get(i).getName(), Months.Search.getMonth(month))) {
+                        be = true;
+                        index = i;
+                        break;
+                    }
                 }
-            }
-            if (be) {
-                balances.get(index).setMoney(balance);
+                if(be) {
+                   balanceList.get(index).setMoney(balance);
+                } else {
+                   balanceList.add(new TableItems(Months.Search.getMonth(month), balance));
+                }
             } else {
-                balances.add(new Balance(Months.get(month), balance));
+                System.out.println(month);
+                System.out.println("=====");
+                System.out.println(Months.Search.getMonth(month));
+                balanceList.add(new TableItems(Months.Search.getMonth(month), balance));
             }
-        } else {
-            balances.add(new Balance(Months.get(month), balance));
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
+
+    public static TableList getIncomeList() {
+        return incomeList;
+    }
+    public static TableList getExpenseList() {
+        return expenseList;
+    }
+    public static TableList getBalanceList() {
+        return balanceList;
+    }
+
 
     @Override
     protected void onStop() {

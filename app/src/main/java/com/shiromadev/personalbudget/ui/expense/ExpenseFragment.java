@@ -13,15 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.R;
 import com.shiromadev.personalbudget.databinding.FragmentExpenseBinding;
-import com.shiromadev.personalbudget.tables.expense.Expense;
-import com.shiromadev.personalbudget.tables.income.Income;
+import com.shiromadev.personalbudget.tables.TableList;
 
 import java.util.ArrayList;
 
 public class ExpenseFragment extends Fragment {
     private FragmentExpenseBinding binding;
 
-    private static ArrayList<Expense> expenses;
+    private static TableList expenses;
 
     private TableLayout tableLayout;
 
@@ -29,7 +28,7 @@ public class ExpenseFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        expenses = MainActivity.getExpenses();
+        expenses = MainActivity.getExpenseList();
         MainActivity.setFlag(flag);
         ExpenseViewModel expenseViewModel =
                 new ViewModelProvider(this).get(ExpenseViewModel.class);
@@ -101,7 +100,7 @@ public class ExpenseFragment extends Fragment {
 
     @Override
     public void onResume() {
-        expenses = MainActivity.getExpenses();
+        expenses = MainActivity.getExpenseList();
         MainActivity.setFlag(flag);
         tableLayout = binding.tableExpense;
         tableLayout.removeAllViews();

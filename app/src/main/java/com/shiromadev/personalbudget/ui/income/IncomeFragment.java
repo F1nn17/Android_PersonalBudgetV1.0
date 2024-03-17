@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.shiromadev.personalbudget.R;
-import com.shiromadev.personalbudget.tables.income.Income;
+import com.shiromadev.personalbudget.tables.TableList;
 import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.databinding.FragmentIncomeBinding;
 
@@ -19,18 +19,17 @@ import java.util.ArrayList;
 
 public class IncomeFragment extends Fragment {
     private FragmentIncomeBinding binding;
-    private static ArrayList<Income> incomes;
+    private static TableList incomes;
 
    private TableLayout tableLayout;
 
     private final String flag = "I";
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        incomes = MainActivity.getIncomes();
+        incomes = MainActivity.getIncomeList();
         MainActivity.setFlag(flag);
         IncomeViewModel incomeViewModel =
                 new ViewModelProvider(this).get(IncomeViewModel.class);
-
         binding = FragmentIncomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         tableLayout = binding.tableIncome;
@@ -82,7 +81,7 @@ public class IncomeFragment extends Fragment {
 
     @Override
     public void onResume() {
-        incomes = MainActivity.getIncomes();
+        incomes = MainActivity.getIncomeList();
         MainActivity.setFlag(flag);
         tableLayout = binding.tableIncome;
         tableLayout.removeAllViews();

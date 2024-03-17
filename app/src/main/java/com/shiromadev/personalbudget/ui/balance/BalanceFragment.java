@@ -12,22 +12,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.databinding.FragmentBalanceBinding;
-import com.shiromadev.personalbudget.tables.balance.Balance;
-import com.shiromadev.personalbudget.tables.income.Income;
-import com.shiromadev.personalbudget.ui.balance.BalanceViewModel;
+import com.shiromadev.personalbudget.tables.TableList;
 
 import java.util.ArrayList;
 
 public class BalanceFragment extends Fragment {
     private FragmentBalanceBinding binding;
 
-    private static ArrayList<Balance> balances;
+    private static TableList balances;
 
     private TableLayout tableLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        balances = MainActivity.getBalances();
+        balances = MainActivity.getBalanceList();
         String flag = "B";
         MainActivity.setFlag(flag);
         BalanceViewModel balanceViewModel =
