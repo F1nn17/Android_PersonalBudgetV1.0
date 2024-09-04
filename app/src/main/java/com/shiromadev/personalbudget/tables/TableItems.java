@@ -33,6 +33,7 @@ public class TableItems implements Serializable {
     public int getAmount() {
         return amount;
     }
+
     @Override
     public boolean equals(Object obj){
         if(!(obj instanceof TableItems)) return false;

@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.shiromadev.personalbudget"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.shiromadev.personalbudget"

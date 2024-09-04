@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
+import com.shiromadev.personalbudget.controller.SqliteController;
 import com.shiromadev.personalbudget.databinding.ActivityMainBinding;
 import com.shiromadev.personalbudget.gson.JSONHelper;
 import com.shiromadev.personalbudget.tables.TableItems;
@@ -65,6 +66,7 @@ enum Months{
 
 public class MainActivity extends AppCompatActivity {
 
+    private SqliteController sqliteController;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private static TableList incomeList = new TableList();
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sqliteController = new SqliteController(this);
         loadData();
         if (balanceList.size() >= 2)
         {

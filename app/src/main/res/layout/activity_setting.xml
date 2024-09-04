@@ -27,6 +27,6 @@
                 android:text="@string/ButtonClearDataTables"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button"/>
+                android:id="@+id/button" android:onClick="ClearDataTables"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
