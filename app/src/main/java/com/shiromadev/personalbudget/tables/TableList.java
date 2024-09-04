@@ -1,6 +1,8 @@
 package com.shiromadev.personalbudget.tables;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TableList implements Serializable {
     private static class Node{
@@ -33,16 +35,41 @@ public class TableList implements Serializable {
     public void add(TableItems data) {
         Node current = head;
         if(current != null){
-            while(current.getNext() != null){
-                current = current.getNext();
+            if(searchElement(data)){
+                while (current.getNext() != null && !current.getData().equals(data)){
+                    current = current.getNext();
+                }
+                TableItems newData = current.getData();
+                newData.setAmount(newData.getAmount()+ data.getAmount());
+                newData.setMoney(newData.getMoney()+ data.getMoney());
+                current.setData(newData);
             }
-            Node node = new Node(data);
-            current.setNext(node);
+            else {
+                while(current.getNext() != null){
+                    current = current.getNext();
+                }
+                Node node = new Node(data);
+                current.setNext(node);
+                length++;
+            }
         }
         else{
             head = new Node(data);
+            length++;
         }
-        length++;
+    }
+
+    private Boolean searchElement(TableItems element){
+        Node current = head;
+        boolean be = false;
+        while (current != null){
+            if (current.getData().equals(element)) {
+                be = true;
+                break;
+            }
+            current = current.getNext();
+        }
+        return be;
     }
 
     public void remove(int id){

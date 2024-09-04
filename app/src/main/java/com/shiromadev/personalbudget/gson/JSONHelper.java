@@ -8,7 +8,6 @@ import java.io.*;
 public class JSONHelper {
 
     public static TableList Import(Context context, String nameFile, TableList tableList) {
-        System.out.println("Import data!");
         try (FileInputStream fileInputStream = context.openFileInput(nameFile);
              InputStreamReader streamReader = new InputStreamReader(fileInputStream)) {
             tableList = new Gson().fromJson(streamReader, TableList.class);

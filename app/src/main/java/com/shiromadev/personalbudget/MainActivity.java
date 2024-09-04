@@ -75,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String NEW_EXPENSE = "NEW_EXPENSE";
     LocalDateTime date = LocalDateTime.now();
     int month = date.getMonthValue(); //current month
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,9 +225,6 @@ public class MainActivity extends AppCompatActivity {
                    balanceList.add(new TableItems(Months.Search.getMonth(month), balance));
                 }
             } else {
-                System.out.println(month);
-                System.out.println("=====");
-                System.out.println(Months.Search.getMonth(month));
                 balanceList.add(new TableItems(Months.Search.getMonth(month), balance));
             }
         }
