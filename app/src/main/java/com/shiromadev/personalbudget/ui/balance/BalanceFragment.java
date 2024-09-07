@@ -26,8 +26,6 @@ public class BalanceFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         String flag = "B";
         MainActivity.setFlag(flag);
-        BalanceViewModel balanceViewModel =
-                new ViewModelProvider(this).get(BalanceViewModel.class);
 
         binding = FragmentBalanceBinding.inflate(inflater, container, false);
         tableLayout = binding.tableBalance;

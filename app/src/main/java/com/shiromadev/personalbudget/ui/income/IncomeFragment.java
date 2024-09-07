@@ -27,8 +27,6 @@ public class IncomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MainActivity.setFlag(flag);
-        IncomeViewModel incomeViewModel =
-                new ViewModelProvider(this).get(IncomeViewModel.class);
         binding = FragmentIncomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         tableLayout = binding.tableIncome;

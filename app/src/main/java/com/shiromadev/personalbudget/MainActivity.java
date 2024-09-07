@@ -18,8 +18,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.shiromadev.personalbudget.databinding.ActivityMainBinding;
+import com.shiromadev.personalbudget.helpers.SQLiteControllerHelper;
 import com.shiromadev.personalbudget.tables.ItemTable;
-import com.shiromadev.personalbudget.tables.TableList;
 import com.shiromadev.personalbudget.ui.expense.NewExpense;
 import com.shiromadev.personalbudget.ui.income.NewIncome;
 import com.shiromadev.personalbudget.ui.settings.SettingActivity;
@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
+    private SQLiteControllerHelper sqlHelper;
+
     @Getter
     private static ArrayList<ItemTable> balances = new ArrayList<>();
 
@@ -105,7 +107,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        try {
+            sqlHelper = new SQLiteControllerHelper(getApplicationContext());
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
         loadData();
 
         updateBalance();
@@ -151,11 +159,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadData(){
-
+        System.out.println("Start load data database....");
+        balances = sqlHelper.unloadTable();
+        System.out.println("Load success!");
     }
 
     public void unLoadData(){
-
+        System.out.println("Start unload data database....");
+        sqlHelper.loadTable(balances);
+        System.out.println("Unload success!");
     }
 
     public void newIncome() {

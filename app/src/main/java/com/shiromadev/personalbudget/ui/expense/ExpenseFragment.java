@@ -28,8 +28,6 @@ public class ExpenseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         MainActivity.setFlag(flag);
-        ExpenseViewModel expenseViewModel =
-                new ViewModelProvider(this).get(ExpenseViewModel.class);
 
         binding = FragmentExpenseBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
