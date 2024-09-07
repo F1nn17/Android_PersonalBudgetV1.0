@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.shiromadev.personalbudget.tables.TableList;
 import java.io.*;
 
+@Deprecated
 public class JSONHelper {
 
     public static TableList Import(Context context, String nameFile, TableList tableList) {

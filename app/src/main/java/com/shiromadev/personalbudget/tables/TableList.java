@@ -1,45 +1,17 @@
 package com.shiromadev.personalbudget.tables;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
+@Deprecated
 public class TableList implements Serializable {
-    private static class Node{
-        TableItems Data;
-        Node Next;
-        public Node(){
-            Data = null;
-            Next = null;
-        }
-        public Node(TableItems Data){
-            this.Data = Data;
-            Next = null;
-        }
-        public TableItems getData() {
-            return Data;
-        }
-        public void setData(TableItems data) {
-            Data = data;
-        }
-        public Node getNext() {
-            return Next;
-        }
-        public void setNext(Node next) {
-            Next = next;
-        }
-    }
-    Node head;
-    int length;
-
-    public void add(TableItems data) {
+    public void add(ItemTable data) {
         Node current = head;
         if(current != null){
             if(searchElement(data)){
                 while (current.getNext() != null && !current.getData().equals(data)){
                     current = current.getNext();
                 }
-                TableItems newData = current.getData();
+                ItemTable newData = current.getData();
                 newData.setAmount(newData.getAmount()+ data.getAmount());
                 newData.setMoney(newData.getMoney()+ data.getMoney());
                 current.setData(newData);
@@ -58,8 +30,10 @@ public class TableList implements Serializable {
             length++;
         }
     }
+    Node head;
+    int length;
 
-    private Boolean searchElement(TableItems element){
+    private Boolean searchElement(ItemTable element) {
         Node current = head;
         boolean be = false;
         while (current != null){
@@ -72,11 +46,7 @@ public class TableList implements Serializable {
         return be;
     }
 
-    public void remove(int id){
-
-    }
-
-    public TableItems get(int id){
+    public ItemTable get(int id) {
         Node current = head;
         int searchIndex = 0;
         if (id != 0) {
@@ -86,6 +56,38 @@ public class TableList implements Serializable {
             }
         }
         return current.getData();
+    }
+
+    public void remove(int id){
+
+    }
+
+    private static class Node{
+        ItemTable Data;
+        Node Next;
+        public Node(){
+            Data = null;
+            Next = null;
+        }
+
+        public Node(ItemTable Data) {
+            this.Data = Data;
+            Next = null;
+        }
+
+        public ItemTable getData() {
+            return Data;
+        }
+
+        public void setData(ItemTable data) {
+            Data = data;
+        }
+        public Node getNext() {
+            return Next;
+        }
+        public void setNext(Node next) {
+            Next = next;
+        }
     }
 
     public int sum(){
