@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.R;
-import com.shiromadev.personalbudget.tables.TableItems;
+import com.shiromadev.personalbudget.tables.ItemTable;
+
 public class NewIncome extends AppCompatActivity {
     EditText nameEditText;
     EditText moneyEditText;
@@ -24,9 +25,14 @@ public class NewIncome extends AppCompatActivity {
         String inpName = nameEditText.getText().toString();
         String outName = inpName.substring(0, 1).toUpperCase() + inpName.substring(1);
         int money = Integer.parseInt(moneyEditText.getText().toString());
-        TableItems income = new TableItems(outName,money);
+        ItemTable income = ItemTable.builder()
+                .group(ItemTable.GROUP.INCOME)
+                .name(outName)
+                .money(money)
+                .month(MainActivity.getMonth())
+                .build();
         Intent data = new Intent();
-        data.putExtra(MainActivity.NEW_INCOME, income);
+        data.putExtra("NEW_ITEM", income);
         setResult(RESULT_OK, data);
         finish();
     }

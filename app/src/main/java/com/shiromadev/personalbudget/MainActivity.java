@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -18,134 +17,84 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.shiromadev.personalbudget.databinding.ActivityMainBinding;
-import com.shiromadev.personalbudget.gson.JSONHelper;
-import com.shiromadev.personalbudget.tables.TableItems;
-import com.shiromadev.personalbudget.tables.TableList;
+import com.shiromadev.personalbudget.helpers.SQLiteControllerHelper;
+import com.shiromadev.personalbudget.tables.ItemTable;
 import com.shiromadev.personalbudget.ui.expense.NewExpense;
 import com.shiromadev.personalbudget.ui.income.NewIncome;
 import com.shiromadev.personalbudget.ui.settings.SettingActivity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-enum Months{
-    Search(0, ""),
-    Jan(1, "Январь"),
-    Feb(2, "Февраль"),
-    March(3, "Март"),
-    Apr(4, "Апрель"),
-    May(5, "Мая"),
-    June(6, "Июнь"),
-    Jule(7, "Июль"),
-    Aug(8, "Август"),
-    Sept(9, "Сентябрь"),
-    Oct(10, "Октябрь"),
-    Nov(11, "Ноябрь"),
-    Dec(12, "Декабрь");
-    private final int id;
-    private final String month;
-
-    Months(int id, String month){
-        this.id = id;
-        this.month = month;
-    }
-
-    private int getId(){return id;}
-    String getMonth(int id){
-        for (Months m:Months.values()) {
-            System.out.println(m.id);
-            if(m.id == id){
-                System.out.println("good");
-                return m.month;
-            }
-        }
-        return null;
-    }
-}
-
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class MainActivity extends AppCompatActivity {
+    enum Months{
+        Search(-1,"-1"),
+        Jan(1, "Январь"),
+        Feb(2, "Февраль"),
+        March(3, "Март"),
+        Apr(4, "Апрель"),
+        May(5, "Мая"),
+        June(6, "Июнь"),
+        Jule(7, "Июль"),
+        Aug(8, "Август"),
+        Sept(9, "Сентябрь"),
+        Oct(10, "Октябрь"),
+        Nov(11, "Ноябрь"),
+        Dec(12, "Декабрь");
+        private final int id;
+        private final String month;
+
+        Months(int id, String month){
+            this.id = id;
+            this.month = month;
+        }
+
+        String getMonths(int id){
+            for (Months m:Months.values()) {
+                if(m.id == id){
+                    return m.month;
+                }
+            }
+            return null;
+        }
+    }
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-    private static TableList incomeList = new TableList();
-    private static TableList expenseList = new TableList();
-    private static TableList balanceList = new TableList();
-    public static final String NEW_INCOME = "NEW_INCOME";
+
+    private static SQLiteControllerHelper sqlHelper;
+
+    @Getter
+    private static ArrayList<ItemTable> balances = new ArrayList<>();
+
+    @Setter
     private static String flag = "I";
-    public static final String NEW_EXPENSE = "NEW_EXPENSE";
-    LocalDateTime date = LocalDateTime.now();
-    int month = date.getMonthValue(); //current month
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        loadData();
-        if (balanceList.size() >= 2)
-        {
-            if (!Objects.equals(Months.Search.getMonth(month), balanceList.get(balanceList.size() - 2).getName()))
-            {
-                incomeList.clear();
-                expenseList.clear();
-                TableItems pastBalance = new TableItems(getResources().getString(R.string.previous_month),  balanceList.get(balanceList.size() - 2).getMoney());
-                incomeList.add(pastBalance);
-                updateBalance();
-                unLoadData();
-            }
-        }
-        updateBalance();
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (flag){
-                    case "I":
-                        newIncome();
-                        break;
-                    case "E":
-                        newExpense();
-                        break;
-                }
-            }
-        });
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_income, R.id.nav_expense, R.id.nav_balance)
-                .setOpenableLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-    }
+
+    //local date
+    private static LocalDateTime date = LocalDateTime.now();
+    //current month
+    @Getter
+    private static int month = date.getMonthValue();
 
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
-                        if (Objects.equals(flag, "I")) {
-                            TableItems newIncome;
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                                assert intent != null;
-                                newIncome = intent.getSerializableExtra(NEW_INCOME, TableItems.class);
-                            } else {
-                                newIncome = (TableItems) intent.getSerializableExtra(NEW_INCOME);
-                            }
-                            incomeList.add(newIncome);
+                        ItemTable newItem;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                            assert intent != null;
+                            newItem = intent.getSerializableExtra("NEW_ITEM", ItemTable.class);
+                        } else {
+                            newItem = (ItemTable) intent.getSerializableExtra("NEW_ITEM");
                         }
-                        if (Objects.equals(flag, "E")) {
-                            TableItems newExpense;
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                                assert intent != null;
-                                newExpense = intent.getSerializableExtra(NEW_EXPENSE, TableItems.class);
-                            } else {
-                                newExpense = (TableItems) intent.getSerializableExtra(NEW_EXPENSE);
-                            }
-                           expenseList.add(newExpense);
-                        }
+                        balances.add(newItem);
                         updateBalance();
                         unLoadData();
                     } else {
@@ -155,8 +104,45 @@ public class MainActivity extends AppCompatActivity {
             });
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            sqlHelper = new SQLiteControllerHelper(getApplicationContext());
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+        loadData();
+
+        updateBalance();
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.appBarMain.toolbar);
+        binding.appBarMain.fab.setOnClickListener(view -> {
+            switch (flag){
+                case "I":
+                    newIncome();
+                    break;
+                case "E":
+                    newExpense();
+                    break;
+            }
+        });
+        DrawerLayout drawer = binding.drawerLayout;
+        NavigationView navigationView = binding.navView;
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_income, R.id.nav_expense, R.id.nav_balance)
+                .setOpenableLayout(drawer)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -169,25 +155,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadData(){
-        incomeList = JSONHelper.Import(this, "Income.json", incomeList);
-        expenseList = JSONHelper.Import(this, "Expense.json", expenseList);
-        balanceList =  JSONHelper.Import(this, "Balance.json", balanceList);
-        System.out.println("Данные загружены!");
+        System.out.println("Start load data database....");
+        balances = sqlHelper.unloadTable();
+        System.out.println("Load success!");
     }
 
     public void unLoadData(){
-        boolean resultIncome = JSONHelper.Export(this, "Income.json", incomeList);
-        boolean resultExpense = JSONHelper.Export(this, "Expense.json", expenseList);
-        boolean resultBalance = JSONHelper.Export(this, "Balance.json", balanceList);
-        if(resultIncome){
-            System.out.println("Данные Income сохранены!");
-        }
-        if(resultExpense){
-            System.out.println("Данные Expense сохранены!");
-        }
-        if(resultBalance){
-            System.out.println("Данные Balance сохранены!");
-        }
+        System.out.println("Start unload data database....");
+        sqlHelper.loadTable(balances);
+        System.out.println("Unload success!");
     }
 
     public void newIncome() {
@@ -200,49 +176,38 @@ public class MainActivity extends AppCompatActivity {
         mStartForResult.launch(intent);
     }
 
-    public static void setFlag(String flagTable) {
-        flag = flagTable;
-    }
-
     void updateBalance() {
-        try {
-            int income = incomeList.sum();
-            int expense = expenseList.sum();
-            int balance = income - expense;
-            if (balanceList.size() != 0) {
-                boolean be = false;
-                int index = 0;
-                for (int i = 0; i < balanceList.size(); i++) {
-                    if (Objects.equals(balanceList.get(i).getName(), Months.Search.getMonth(month))) {
-                        be = true;
-                        index = i;
-                        break;
-                    }
+        int income = 0, expense = 0, balance;
+        if(!balances.isEmpty()) {
+            for (ItemTable item : balances) {
+                if (item.getGroup() == ItemTable.GROUP.INCOME) {
+                    income += item.getMoney();
                 }
-                if(be) {
-                   balanceList.get(index).setMoney(balance);
-                } else {
-                   balanceList.add(new TableItems(Months.Search.getMonth(month), balance));
+                if (item.getGroup() == ItemTable.GROUP.EXPENSE) {
+                    expense += item.getMoney();
                 }
-            } else {
-                balanceList.add(new TableItems(Months.Search.getMonth(month), balance));
             }
+            balance = income - expense;
+            int index = 0;
+            while (index < balances.size()
+                    && (balances.get(index).getGroup() != ItemTable.GROUP.BALANCE
+                    || balances.get(index).getMonth() != month)) {
+                index++;
+            }
+            if (balances.size() == 1) index--;
+            if (balances.get(index).getGroup() == ItemTable.GROUP.BALANCE)
+                balances.get(index).setMoney(balance);
+            else{
+                balances.add(ItemTable.builder()
+                        .group(ItemTable.GROUP.BALANCE)
+                        .name(Months.Search.getMonths(month))
+                        .month(month)
+                        .money(balance)
+                        .build());
+            }
+            unLoadData();
         }
-        catch (Exception e){
-            e.printStackTrace();
-        }
     }
-
-    public static TableList getIncomeList() {
-        return incomeList;
-    }
-    public static TableList getExpenseList() {
-        return expenseList;
-    }
-    public static TableList getBalanceList() {
-        return balanceList;
-    }
-
 
     @Override
     protected void onStop() {
