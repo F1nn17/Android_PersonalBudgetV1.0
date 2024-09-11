@@ -9,12 +9,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.R;
 import com.shiromadev.personalbudget.databinding.FragmentExpenseBinding;
 import com.shiromadev.personalbudget.tables.ItemTable;
-import com.shiromadev.personalbudget.tables.TableList;
 
 import java.util.ArrayList;
 
