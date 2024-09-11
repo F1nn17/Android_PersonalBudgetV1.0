@@ -38,23 +38,24 @@ public class BalanceFragment extends Fragment {
     ArrayList<TextView> tableTextMoney = new ArrayList<>();
     private void loadViewIncome(){
         for (int i = 0; i < MainActivity.getBalances().size(); i++) {
+            int k = 0;
             if (MainActivity.getBalances().get(i).getGroup() == ItemTable.GROUP.BALANCE) {
-                tableRows.add(i, new TableRow(getContext()));
-                tableTextName.add(i, new TextView(getContext()));
-                tableTextName.get(i).setText(MainActivity.getBalances().get(i).getName());
-                tableTextName.get(i).setTextSize(22);
-                tableTextName.get(i).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                tableRows.get(i).addView(tableTextName.get(i), new TableRow.LayoutParams(
+                tableRows.add(k, new TableRow(getContext()));
+                tableTextName.add(0, new TextView(getContext()));
+                tableTextName.get(k).setText(MainActivity.getBalances().get(i).getName());
+                tableTextName.get(k).setTextSize(22);
+                tableTextName.get(k).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                tableRows.get(k).addView(tableTextName.get(k), new TableRow.LayoutParams(
                         TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
 
-                tableTextMoney.add(i, new TextView(getContext()));
-                tableTextMoney.get(i).setText(String.valueOf(MainActivity.getBalances().get(i).getMoney()));
-                tableTextMoney.get(i).setTextSize(22);
-                tableTextMoney.get(i).setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-                tableRows.get(i).addView(tableTextMoney.get(i), new TableRow.LayoutParams(
+                tableTextMoney.add(k, new TextView(getContext()));
+                tableTextMoney.get(k).setText(String.valueOf(MainActivity.getBalances().get(i).getMoney()));
+                tableTextMoney.get(k).setTextSize(22);
+                tableTextMoney.get(k).setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                tableRows.get(k).addView(tableTextMoney.get(k), new TableRow.LayoutParams(
                         TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
 
-                tableLayout.addView(tableRows.get(i));
+                tableLayout.addView(tableRows.get(k));
             }
         }
     }

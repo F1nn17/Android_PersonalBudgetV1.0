@@ -48,9 +48,6 @@ public class SqliteController extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    private static final String INSERT = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_GROUP + ", " + COLUMN_NAME + ", "+
-            COLUMN_PRICE + ", " + COLUMN_AMOUNT + ", " + COLUMN_MONTH + ") VALUES (?,?,?,?,?)";
-
     private void deleteTable(SQLiteDatabase db) {
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }

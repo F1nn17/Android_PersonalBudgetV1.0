@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.R;
 import com.shiromadev.personalbudget.tables.ItemTable;
 
@@ -30,6 +31,7 @@ public class NewExpense extends AppCompatActivity {
                 .name(outName)
                 .amount(1)
                 .money(money)
+                .month(MainActivity.getMonth())
                 .build();
         Intent data = new Intent();
         data.putExtra("NEW_ITEM", expense);

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.R;
 import com.shiromadev.personalbudget.tables.ItemTable;
 
@@ -28,6 +29,7 @@ public class NewIncome extends AppCompatActivity {
                 .group(ItemTable.GROUP.INCOME)
                 .name(outName)
                 .money(money)
+                .month(MainActivity.getMonth())
                 .build();
         Intent data = new Intent();
         data.putExtra("NEW_ITEM", income);

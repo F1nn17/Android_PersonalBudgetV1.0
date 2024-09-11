@@ -31,48 +31,45 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.*;
 
-enum Months{
-    Search(0, ""),
-    Jan(1, "Январь"),
-    Feb(2, "Февраль"),
-    March(3, "Март"),
-    Apr(4, "Апрель"),
-    May(5, "Мая"),
-    June(6, "Июнь"),
-    Jule(7, "Июль"),
-    Aug(8, "Август"),
-    Sept(9, "Сентябрь"),
-    Oct(10, "Октябрь"),
-    Nov(11, "Ноябрь"),
-    Dec(12, "Декабрь");
-    private final int id;
-    private final String month;
-
-    Months(int id, String month){
-        this.id = id;
-        this.month = month;
-    }
-
-    String getMonth(int id){
-        for (Months m:Months.values()) {
-            System.out.println(m.id);
-            if(m.id == id){
-                System.out.println("good");
-                return m.month;
-            }
-        }
-        return null;
-    }
-}
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class MainActivity extends AppCompatActivity {
+    enum Months{
+        Search(-1,"-1"),
+        Jan(1, "Январь"),
+        Feb(2, "Февраль"),
+        March(3, "Март"),
+        Apr(4, "Апрель"),
+        May(5, "Мая"),
+        June(6, "Июнь"),
+        Jule(7, "Июль"),
+        Aug(8, "Август"),
+        Sept(9, "Сентябрь"),
+        Oct(10, "Октябрь"),
+        Nov(11, "Ноябрь"),
+        Dec(12, "Декабрь");
+        private final int id;
+        private final String month;
+
+        Months(int id, String month){
+            this.id = id;
+            this.month = month;
+        }
+
+        String getMonths(int id){
+            for (Months m:Months.values()) {
+                if(m.id == id){
+                    return m.month;
+                }
+            }
+            return null;
+        }
+    }
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
-    private SQLiteControllerHelper sqlHelper;
+    private static SQLiteControllerHelper sqlHelper;
 
     @Getter
     private static ArrayList<ItemTable> balances = new ArrayList<>();
@@ -81,8 +78,11 @@ public class MainActivity extends AppCompatActivity {
     private static String flag = "I";
 
     //local date
-    LocalDateTime date = LocalDateTime.now();
-    int month = date.getMonthValue(); //current month
+    private static LocalDateTime date = LocalDateTime.now();
+    //current month
+    @Getter
+    private static int month = date.getMonthValue();
+
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
@@ -121,17 +121,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (flag){
-                    case "I":
-                        newIncome();
-                        break;
-                    case "E":
-                        newExpense();
-                        break;
-                }
+        binding.appBarMain.fab.setOnClickListener(view -> {
+            switch (flag){
+                case "I":
+                    newIncome();
+                    break;
+                case "E":
+                    newExpense();
+                    break;
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -180,9 +177,37 @@ public class MainActivity extends AppCompatActivity {
         mStartForResult.launch(intent);
     }
 
-
     void updateBalance() {
-
+        int income = 0, expense = 0, balance;
+        if(!balances.isEmpty()) {
+            for (ItemTable item : balances) {
+                if (item.getGroup() == ItemTable.GROUP.INCOME) {
+                    income += item.getMoney();
+                }
+                if (item.getGroup() == ItemTable.GROUP.EXPENSE) {
+                    expense += item.getMoney();
+                }
+            }
+            balance = income - expense;
+            int index = 0;
+            while (index < balances.size()
+                    && (balances.get(index).getGroup() != ItemTable.GROUP.BALANCE
+                    || balances.get(index).getMonth() != month)) {
+                index++;
+            }
+            if (balances.size() == 1) index--;
+            if (balances.get(index).getGroup() == ItemTable.GROUP.BALANCE)
+                balances.get(index).setMoney(balance);
+            else{
+                balances.add(ItemTable.builder()
+                        .group(ItemTable.GROUP.BALANCE)
+                        .name(Months.Search.getMonths(month))
+                        .month(month)
+                        .money(balance)
+                        .build());
+            }
+            unLoadData();
+        }
     }
 
     @Override
