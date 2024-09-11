@@ -16,7 +16,7 @@ import java.util.Arrays;
 @Getter
 public class SqliteController extends SQLiteOpenHelper {
     private static final String NAME_DB = "balance.db";
-    private static final int SCHEMA = 2;
+    private static final int SCHEMA = 3;
 
     private static final String TABLE_NAME = "balances";
     private static final String COLUMN_ID = "_id";
@@ -51,8 +51,13 @@ public class SqliteController extends SQLiteOpenHelper {
     private static final String INSERT = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_GROUP + ", " + COLUMN_NAME + ", "+
             COLUMN_PRICE + ", " + COLUMN_AMOUNT + ", " + COLUMN_MONTH + ") VALUES (?,?,?,?,?)";
 
+    private void deleteTable(SQLiteDatabase db) {
+        db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
+
     public void loadTable(SQLiteDatabase db, ArrayList<ItemTable> tables){
         try{
+            deleteTable(db);
             for (ItemTable item : tables) {
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_GROUP, item.getGroup().getGROUP_NAME());
