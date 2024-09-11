@@ -28,10 +28,10 @@ public class ItemTable implements Serializable {
         EXPENSE("expense"),
         BALANCE("balance");
         private final String GROUP_NAME;
-
         GROUP(String group_name) {
             GROUP_NAME = group_name;
         }
+
     }
 
 }

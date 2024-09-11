@@ -1,5 +1,6 @@
 package com.shiromadev.personalbudget.controller;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,13 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 import com.shiromadev.personalbudget.tables.ItemTable;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Getter
 public class SqliteController extends SQLiteOpenHelper {
     private static final String NAME_DB = "balance.db";
-    private static final int SCHEMA = 1;
+    private static final int SCHEMA = 2;
 
     private static final String TABLE_NAME = "balances";
     private static final String COLUMN_ID = "_id";
@@ -23,9 +26,9 @@ public class SqliteController extends SQLiteOpenHelper {
     private static final String COLUMN_AMOUNT = "amount";
     private static final String COLUMN_MONTH = "month";
 
-    Cursor cursor;
+    String[] headers = new String[]{COLUMN_NAME, COLUMN_GROUP, COLUMN_PRICE, COLUMN_AMOUNT, COLUMN_MONTH};
 
-    public SqliteController(@Nullable Context context, SQLiteDatabase db ) {
+    public SqliteController(@Nullable Context context) {
         super(context, NAME_DB, null, SCHEMA);
     }
 
@@ -36,7 +39,6 @@ public class SqliteController extends SQLiteOpenHelper {
                 "( " + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_GROUP + " TEXT," +
                 COLUMN_NAME + " TEXT," + COLUMN_PRICE + " INTEGER," + COLUMN_AMOUNT + " INTEGER," +
                 COLUMN_MONTH + " INTEGER);");
-        db.close();
         System.out.println("Create database table success!");
     }
 
@@ -46,38 +48,64 @@ public class SqliteController extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public SQLiteDatabase openDatabase(SQLiteDatabase db, Context context){
-        return context.openOrCreateDatabase(NAME_DB, Context.MODE_PRIVATE, null);
-    }
-
     private static final String INSERT = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_GROUP + ", " + COLUMN_NAME + ", "+
             COLUMN_PRICE + ", " + COLUMN_AMOUNT + ", " + COLUMN_MONTH + ") VALUES (?,?,?,?,?)";
 
     public void loadTable(SQLiteDatabase db, ArrayList<ItemTable> tables){
         try{
-            db.beginTransaction();
-            db.execSQL(INSERT, tables.toArray());
+            for (ItemTable item : tables) {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_GROUP, item.getGroup().getGROUP_NAME());
+                values.put(COLUMN_NAME, item.getName());
+                values.put(COLUMN_PRICE, item.getMoney());
+                values.put(COLUMN_AMOUNT, item.getAmount());
+                values.put(COLUMN_MONTH, item.getMonth());
+                db.insert(TABLE_NAME, null, values);
+                values.clear();
+            }
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
             System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
         finally {
-            db.endTransaction();
             db.close();
         }
     }
 
+    @SuppressLint({"Recycle", "Range"})
     public ArrayList<ItemTable> unloadTable(SQLiteDatabase db){
+        ArrayList<ItemTable> tables = new ArrayList<>();
         System.out.println("---------------------------");
         System.out.println("unload data from database to balance table");
-        db.beginTransaction();
-        cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-        System.out.println();
-        db.endTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        System.out.println(cursor.getCount());
+        System.out.println(cursor);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String searchGroup = cursor.getString(cursor.getColumnIndex(COLUMN_GROUP));
+            ItemTable.GROUP group = ItemTable.GROUP.INCOME;
+            switch (searchGroup) {
+                case "expense":
+                    group = ItemTable.GROUP.EXPENSE;
+                    break;
+                case "balance":
+                    group = ItemTable.GROUP.BALANCE;
+                    break;
+            }
+            ItemTable item = ItemTable.builder()
+                    .group(group)
+                    .name(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)))
+                    .money(cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE)))
+                    .amount(cursor.getInt(cursor.getColumnIndex(COLUMN_AMOUNT)))
+                    .month(cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH)))
+                    .build();
+            tables.add(item); //add the item
+            cursor.moveToNext();
+        }
         db.close();
         System.out.println("---------------------------");
-        return new ArrayList<ItemTable>();
+        return tables;
     }
 
 
