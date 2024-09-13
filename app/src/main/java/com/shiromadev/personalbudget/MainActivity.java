@@ -1,10 +1,14 @@
 package com.shiromadev.personalbudget;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -65,36 +69,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
-
+    @Getter
+    private static ArrayList<ItemTable> refueling = new ArrayList<>();
+    //local date
+    @Getter
+    private static LocalDateTime date = LocalDateTime.now();
     private static SQLiteControllerHelper sqlHelper;
-
     @Getter
     private static ArrayList<ItemTable> balances = new ArrayList<>();
-
+    private TextView tvBalance;
     @Setter
     private static String flag = "I";
-
-    //local date
-    private static LocalDateTime date = LocalDateTime.now();
-    //current month
-    @Getter
-    private static int month = date.getMonthValue();
-
     ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
                         ItemTable newItem;
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             assert intent != null;
                             newItem = intent.getSerializableExtra("NEW_ITEM", ItemTable.class);
                         } else {
                             newItem = (ItemTable) intent.getSerializableExtra("NEW_ITEM");
                         }
-                        balances.add(newItem);
+                        addItem(newItem);
                         updateBalance();
                         unLoadData();
                     } else {
@@ -102,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+    //current month
+    @Getter
+    private static int month = date.getMonthValue();
+    private TextView tvMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +119,13 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
         loadData();
-
-        updateBalance();
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        NavigationView navigationView = binding.navView;
+        View hv = navigationView.getHeaderView(0);
+        tvBalance = hv.findViewById(R.id.balance_view);
+        tvMonth = hv.findViewById(R.id.month_view);
+        tvMonth.setText(Months.Search.getMonths(month));
+        updateBalance();
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(view -> {
@@ -131,9 +139,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_income, R.id.nav_expense, R.id.nav_balance)
+                R.id.nav_income, R.id.nav_expense, R.id.nav_balance, R.id.nav_refueling)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -156,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadData(){
         System.out.println("Start load data database....");
-        balances = sqlHelper.unloadTable();
+        balances = sqlHelper.unloadTable(month);
         System.out.println("Load success!");
     }
 
@@ -176,14 +183,18 @@ public class MainActivity extends AppCompatActivity {
         mStartForResult.launch(intent);
     }
 
+    @SuppressLint("SetTextI18n")
     void updateBalance() {
-        int income = 0, expense = 0, balance;
+        int income = 0, expense = 0, balance = 0;
         if(!balances.isEmpty()) {
             for (ItemTable item : balances) {
                 if (item.getGroup() == ItemTable.GROUP.INCOME) {
                     income += item.getMoney();
                 }
                 if (item.getGroup() == ItemTable.GROUP.EXPENSE) {
+                    expense += item.getMoney();
+                }
+                if (item.getGroup() == ItemTable.GROUP.REFUELING) {
                     expense += item.getMoney();
                 }
             }
@@ -206,6 +217,23 @@ public class MainActivity extends AppCompatActivity {
                         .build());
             }
             unLoadData();
+        }
+        tvBalance.setText(balance + " ₽");
+    }
+
+    private void addItem(ItemTable item) {
+        boolean isSuccess = false;
+        for (ItemTable balance : balances) {
+            if (balance.equals(item)) {
+                balance.setMoney(balance.getMoney() + item.getMoney());
+                if (balance.getGroup() == ItemTable.GROUP.EXPENSE) balance.setAmount(balance.getAmount() + 1);
+                if (balance.getGroup() == ItemTable.GROUP.REFUELING) balance.setAmount(balance.getAmount() + 1);
+                isSuccess = true;
+            }
+        }
+        if (!isSuccess) balances.add(item);
+        if (item.getGroup() == ItemTable.GROUP.REFUELING) {
+            refueling.add(item);
         }
     }
 

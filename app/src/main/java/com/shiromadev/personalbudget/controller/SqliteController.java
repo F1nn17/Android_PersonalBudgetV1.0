@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
+import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.tables.ItemTable;
 import lombok.Getter;
 
@@ -52,11 +53,31 @@ public class SqliteController extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 
-    public void loadTable(SQLiteDatabase db, ArrayList<ItemTable> tables){
+    public void loadTable(SQLiteDatabase db, ArrayList<ItemTable> allItems, ArrayList<ItemTable> tables) {
         try{
+            int month = MainActivity.getMonth();
             deleteTable(db);
-            for (ItemTable item : tables) {
-                ContentValues values = new ContentValues();
+            boolean isSuccess;
+            if (!allItems.isEmpty() && !tables.isEmpty()) {
+                for (ItemTable itemAll : allItems) {
+                    isSuccess = false;
+                    for (ItemTable itemTable : tables) {
+                        if (itemAll.getMonth() == month && itemTable.getMonth() == month) {
+                            if (itemAll.equals(itemTable)) {
+                                itemAll.setMoney(itemTable.getMoney());
+                                isSuccess = true;
+                            }
+                        } else {
+                            allItems.add(itemTable);
+                        }
+                        if (!isSuccess) allItems.add(itemTable);
+                    }
+                }
+            } else {
+                allItems.addAll(tables);
+            }
+            ContentValues values = new ContentValues();
+            for (ItemTable item : allItems) {
                 values.put(COLUMN_GROUP, item.getGroup().getGROUP_NAME());
                 values.put(COLUMN_NAME, item.getName());
                 values.put(COLUMN_PRICE, item.getMoney());
@@ -76,13 +97,9 @@ public class SqliteController extends SQLiteOpenHelper {
     }
 
     @SuppressLint({"Recycle", "Range"})
-    public ArrayList<ItemTable> unloadTable(SQLiteDatabase db){
+    public ArrayList<ItemTable> unloadTable(SQLiteDatabase db, int month) {
         ArrayList<ItemTable> tables = new ArrayList<>();
-        System.out.println("---------------------------");
-        System.out.println("unload data from database to balance table");
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-        System.out.println(cursor.getCount());
-        System.out.println(cursor);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_MONTH + " = " + month, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String searchGroup = cursor.getString(cursor.getColumnIndex(COLUMN_GROUP));
@@ -94,20 +111,57 @@ public class SqliteController extends SQLiteOpenHelper {
                 case "balance":
                     group = ItemTable.GROUP.BALANCE;
                     break;
+                case "refueling":
+                    group = ItemTable.GROUP.REFUELING;
+                    break;
             }
-            ItemTable item = ItemTable.builder()
-                    .group(group)
-                    .name(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)))
-                    .money(cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE)))
-                    .amount(cursor.getInt(cursor.getColumnIndex(COLUMN_AMOUNT)))
-                    .month(cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH)))
-                    .build();
-            tables.add(item); //add the item
+            tables.add(createItem(group, cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_AMOUNT)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH))));
             cursor.moveToNext();
         }
         db.close();
-        System.out.println("---------------------------");
         return tables;
+    }
+
+    @SuppressLint({"Recycle", "Range"})
+    public ArrayList<ItemTable> getAllItems(SQLiteDatabase db) {
+        ArrayList<ItemTable> tables = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String searchGroup = cursor.getString(cursor.getColumnIndex(COLUMN_GROUP));
+            ItemTable.GROUP group = ItemTable.GROUP.INCOME;
+            switch (searchGroup) {
+                case "expense":
+                    group = ItemTable.GROUP.EXPENSE;
+                    break;
+                case "balance":
+                    group = ItemTable.GROUP.BALANCE;
+                    break;
+                case "refueling":
+                    group = ItemTable.GROUP.REFUELING;
+                    break;
+            }
+            tables.add(createItem(group, cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_AMOUNT)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH))));
+            cursor.moveToNext();
+        }
+        db.close();
+        return tables;
+    }
+
+    private ItemTable createItem(ItemTable.GROUP group, String name, int money, int amount, int month) {
+        return ItemTable.builder()
+                .group(group)
+                .name(name)
+                .money(money)
+                .amount(amount)
+                .month(month)
+                .build();
     }
 
 

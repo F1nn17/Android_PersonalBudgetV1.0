@@ -19,11 +19,20 @@
     <string name="table_month_balance">Месяц</string>
     <string name="table_balance_balance">Баланс</string>
 
+    <string name="table_expense_refueling">Расход</string>
+    <string name="table_fuel_refueling">Топливо</string>
+    <string name="table_date_refueling">Дата</string>
+
+    <string name="toolbar_refueling_expense">Расход</string>
+    <string name="toolbar_refueling_graph">График</string>
+    <string name="toolbar_refueling_setting">Настроить</string>
+
     <string name="previous_month">предыдущий месяц</string>
 
     <string name="menu_income">Доход</string>
     <string name="menu_expense">Расход</string>
     <string name="menu_balance">Баланс</string>
+    <string name="menu_refueling">Заправка</string>
     <string name="addIncome">Добавить</string>
     <string name="moneyIncome">Деньги +</string>
     <string name="nameIncome">Имя</string>

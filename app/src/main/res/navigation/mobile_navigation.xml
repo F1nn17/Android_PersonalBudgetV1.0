@@ -22,4 +22,9 @@
             android:name="com.shiromadev.personalbudget.ui.balance.BalanceFragment"
             android:label="@string/menu_balance"
             tools:layout="@layout/fragment_balance"/>
+    <fragment
+            android:id="@+id/nav_refueling"
+            android:name="com.shiromadev.personalbudget.ui.refueling.RefuelingFragment"
+            android:label="@string/menu_refueling"
+            tools:layout="@layout/fragment_refueling"/>
 </navigation>

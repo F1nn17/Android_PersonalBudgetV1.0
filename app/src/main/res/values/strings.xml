@@ -19,11 +19,20 @@
     <string name="table_month_balance">Month</string>
     <string name="table_balance_balance">Balance</string>
 
+    <string name="table_expense_refueling">Expense</string>
+    <string name="table_fuel_refueling">Fuel</string>
+    <string name="table_date_refueling">Date</string>
+
+    <string name="toolbar_refueling_expense">Expense</string>
+    <string name="toolbar_refueling_graph">Graph</string>
+    <string name="toolbar_refueling_setting">Setting</string>
+
     <string name="previous_month">previous month</string>
 
     <string name="menu_income">Income</string>
     <string name="menu_expense">Expense</string>
     <string name="menu_balance">Balance</string>
+    <string name="menu_refueling">Refueling</string>
     <string name="addIncome">Add</string>
     <string name="moneyIncome">Money +</string>
     <string name="nameIncome">Name</string>
@@ -31,8 +40,8 @@
     <string name="productExpense">Product</string>
     <string name="title_activity_settings">Settings</string>
 
-    <string name="et_name_product"> </string>
-    <string name="et_money_product"> </string>
+    <string name="et_name_product"></string>
+    <string name="et_money_product"></string>
     <string name="DataTables">Data Tables</string>
     <string name="ButtonClearDataTables">Clear Data Tables</string>
 

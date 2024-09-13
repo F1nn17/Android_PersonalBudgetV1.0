@@ -26,7 +26,8 @@ public class ItemTable implements Serializable {
     public enum GROUP {
         INCOME("income"),
         EXPENSE("expense"),
-        BALANCE("balance");
+        BALANCE("balance"),
+        REFUELING("refueling");
         private final String GROUP_NAME;
         GROUP(String group_name) {
             GROUP_NAME = group_name;

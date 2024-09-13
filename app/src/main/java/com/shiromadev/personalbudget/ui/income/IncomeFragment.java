@@ -1,5 +1,6 @@
 package com.shiromadev.personalbudget.ui.income;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,11 @@ import java.util.ArrayList;
 public class IncomeFragment extends Fragment {
     private FragmentIncomeBinding binding;
 
-   private TableLayout tableLayout;
+    private TableLayout tableLayout;
 
     private final String flag = "I";
 
+    @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MainActivity.setFlag(flag);
         binding = FragmentIncomeBinding.inflate(inflater, container, false);
