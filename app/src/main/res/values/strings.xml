@@ -40,6 +40,19 @@
     <string name="productExpense">Product</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string name="title_month_january">January</string>
+    <string name="title_month_february">February</string>
+    <string name="title_month_march">March</string>
+    <string name="title_month_april">April</string>
+    <string name="title_month_may">May</string>
+    <string name="title_month_june">June</string>
+    <string name="title_month_july">July</string>
+    <string name="title_month_august">August</string>
+    <string name="title_month_september">September</string>
+    <string name="title_month_october">October</string>
+    <string name="title_month_november">November</string>
+    <string name="title_month_december">December</string>
+
     <string name="et_name_product"></string>
     <string name="et_money_product"></string>
     <string name="DataTables">Data Tables</string>

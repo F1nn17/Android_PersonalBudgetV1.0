@@ -40,6 +40,19 @@
     <string name="productExpense">Продукт</string>
     <string name="title_activity_settings">Настройки</string>
 
+    <string name="title_month_january">Январь</string>
+    <string name="title_month_february">Февраль</string>
+    <string name="title_month_march">Март</string>
+    <string name="title_month_april">Апрель</string>
+    <string name="title_month_may">Май</string>
+    <string name="title_month_june">Июнь</string>
+    <string name="title_month_july">Июль</string>
+    <string name="title_month_august">Август</string>
+    <string name="title_month_september">Сентябрь</string>
+    <string name="title_month_october">Октрябрь</string>
+    <string name="title_month_november">Ноябрь</string>
+    <string name="title_month_december">Декабрь</string>
+
     <string name="et_name_product"> </string>
     <string name="et_money_product"> </string>
     <string name="DataTables">Данные таблиц</string>

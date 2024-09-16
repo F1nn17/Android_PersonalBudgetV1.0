@@ -2,6 +2,7 @@ package com.shiromadev.personalbudget;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,18 +40,19 @@ import java.util.*;
 public class MainActivity extends AppCompatActivity {
     enum Months{
         Search(-1,"-1"),
-        Jan(1, "Январь"),
-        Feb(2, "Февраль"),
-        March(3, "Март"),
-        Apr(4, "Апрель"),
-        May(5, "Мая"),
-        June(6, "Июнь"),
-        Jule(7, "Июль"),
-        Aug(8, "Август"),
-        Sept(9, "Сентябрь"),
-        Oct(10, "Октябрь"),
-        Nov(11, "Ноябрь"),
-        Dec(12, "Декабрь");
+        Jan(1,  MainActivity.context.getResources().getString(R.string.title_month_january)),
+        Feb(2, MainActivity.context.getResources().getString(R.string.title_month_february)),
+        March(3, MainActivity.context.getResources().getString(R.string.title_month_march)),
+        Apr(4, MainActivity.context.getResources().getString(R.string.title_month_april)),
+        May(5, MainActivity.context.getResources().getString(R.string.title_month_may)),
+        June(6, MainActivity.context.getResources().getString(R.string.title_month_june)),
+        Jule(7, MainActivity.context.getResources().getString(R.string.title_month_july)),
+        Aug(8, MainActivity.context.getResources().getString(R.string.title_month_august)),
+        Sept(9, MainActivity.context.getResources().getString(R.string.title_month_september)),
+        Oct(10, MainActivity.context.getResources().getString(R.string.title_month_october)),
+        Nov(11, MainActivity.context.getResources().getString(R.string.title_month_november)),
+        Dec(12, MainActivity.context.getResources().getString(R.string.title_month_december));
+
         private final int id;
         private final String month;
 
@@ -72,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    @SuppressLint("StaticFieldLeak")
+    @Getter
+    static Context context;
     @Getter
     private static ArrayList<ItemTable> refueling = new ArrayList<>();
     //local date
@@ -111,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         try {
             sqlHelper = new SQLiteControllerHelper(getApplicationContext());
         } catch (Exception e) {
