@@ -57,5 +57,10 @@
     <string name="et_money_product"> </string>
     <string name="DataTables">Данные таблиц</string>
     <string name="ButtonClearDataTables">Удалить данные таблиц</string>
+	<string name="fuel">Топливо</string>
+	<string name="price">Цена</string>
+	<string name="r_l">Руб/Литр</string>
+	<string name="edit_refuelsettings">Изменить</string>
+	<string name="accept_refuelsettings">Применить</string>
 
 </resources>
