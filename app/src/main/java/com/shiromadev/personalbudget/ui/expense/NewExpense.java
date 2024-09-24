@@ -9,6 +9,7 @@ import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.R;
 import com.shiromadev.personalbudget.tables.ItemTable;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class NewExpense extends AppCompatActivity {
@@ -38,7 +39,6 @@ public class NewExpense extends AppCompatActivity {
 	}
 
 	public void AddExpense(View view) {
-
 		String inpName = nameEditText.getText().toString();
 		String outName = inpName.substring(0, 1).toUpperCase() + inpName.substring(1);
 		int money = Integer.parseInt(moneyEditText.getText().toString());
@@ -53,7 +53,13 @@ public class NewExpense extends AppCompatActivity {
 			.amount(1)
 			.money(money)
 			.month(MainActivity.getMonth())
+			.data(MainActivity.getDate())
 			.build();
+		if (expense.getGroup() == ItemTable.GROUP.REFUELING) {
+			DecimalFormat decimalFormat = new DecimalFormat("#.##");
+			String litres = decimalFormat.format(money / MainActivity.getRefuelingSetting().getPrice());
+			expense.setLiters(litres);
+		}
 		Intent data = new Intent();
 		data.putExtra("NEW_ITEM", expense);
 		setResult(RESULT_OK, data);

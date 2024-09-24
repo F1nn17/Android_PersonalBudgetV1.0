@@ -24,7 +24,7 @@
     <string name="table_date_refueling">Дата</string>
 
     <string name="toolbar_refueling_expense">Расход</string>
-    <string name="toolbar_refueling_graph">График</string>
+    <string name="toolbar_refueling_graph">Статистика</string>
     <string name="toolbar_refueling_setting">Настроить</string>
 
     <string name="previous_month">предыдущий месяц</string>
@@ -62,5 +62,9 @@
 	<string name="r_l">Руб/Литр</string>
 	<string name="edit_refuelsettings">Изменить</string>
 	<string name="accept_refuelsettings">Применить</string>
+    <string name="litres">л</string>
+    <string name="graph_stats_costs">Costs</string>
+    <string name="graph_stats_litres">Литров</string>
+    <string name="graph_stats_refuelings">Заправок</string>
 
 </resources>

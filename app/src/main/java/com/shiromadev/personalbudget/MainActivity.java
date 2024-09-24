@@ -33,6 +33,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 	static Context context;
 	@Getter
 	private static ArrayList<ItemTable> refueling = new ArrayList<>();
-	//local date
+	//Local date
 	@Getter
 	private static LocalDateTime date = LocalDateTime.now();
 	private static SQLiteControllerHelper sqlHelper;
@@ -54,14 +55,19 @@ public class MainActivity extends AppCompatActivity {
 	private static ArrayList<ItemTable> balances = new ArrayList<>();
 	@Setter
 	private static String flag = "I";
-	//current month
+	//Current month
 	@Getter
 	private static int month = date.getMonthValue();
+	//Refuel settings
 	@Getter
 	private static RefuelingSetting refuelingSetting = new RefuelingSetting();
+	//Configuration fragments and activity
 	private AppBarConfiguration mAppBarConfiguration;
 	private ActivityMainBinding binding;
+	//TextView
 	private TextView tvBalance;
+	private TextView tvMonth;
+
 	//get result other activity
 	ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
 		@Override
@@ -83,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 	});
-	private TextView tvMonth;
 
 	public static void saveSettings() {
 		JSONHelper.export(context, refuelingSetting);
@@ -144,11 +149,16 @@ public class MainActivity extends AppCompatActivity {
 			|| super.onSupportNavigateUp();
 	}
 
-	public void loadData() {
-		System.out.println("Start load data database....");
-		balances = sqlHelper.unloadTable(month);
-		refuelingSetting = JSONHelper.importSetting(this);
-		System.out.println("Load success!");
+	public static void recalculationLitres() {
+		float price = refuelingSetting.getPrice();
+		for (ItemTable refuel : refueling) {
+			DecimalFormat decimalFormat = new DecimalFormat("#.##");
+			String litres = decimalFormat.format(refuel.getMoney() / price);
+			refuel.setLiters(litres);
+			for (ItemTable balance : balances) {
+				if (balance.equals(refuel)) balance = refuel;
+			}
+		}
 	}
 
 	public void unLoadData() {
@@ -168,8 +178,16 @@ public class MainActivity extends AppCompatActivity {
 		mStartForResult.launch(intent);
 	}
 
+	public void loadData() {
+		System.out.println("Start load data database....");
+		refuelingSetting = JSONHelper.importSetting(this);
+		balances = sqlHelper.unloadTable(month);
+		loadRefuelingArray();
+		System.out.println("Load success!");
+	}
+
 	@SuppressLint("SetTextI18n")
-	void updateBalance() {
+	private void updateBalance() {
 		int income = 0, expense = 0, balance = 0;
 		if (!balances.isEmpty()) {
 			for (ItemTable item : balances) {
@@ -201,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
 					.money(balance)
 					.build());
 			}
+			recalculationLitres();
 			unLoadData();
 		}
 		tvBalance.setText(balance + " ₽");
@@ -208,17 +227,27 @@ public class MainActivity extends AppCompatActivity {
 
 	private void addItem(ItemTable item) {
 		boolean isSuccess = false;
-		for (ItemTable balance : balances) {
-			if (balance.equals(item)) {
-				balance.setMoney(balance.getMoney() + item.getMoney());
-				if (balance.getGroup() == ItemTable.GROUP.EXPENSE) balance.setAmount(balance.getAmount() + 1);
-				if (balance.getGroup() == ItemTable.GROUP.REFUELING) balance.setAmount(balance.getAmount() + 1);
-				isSuccess = true;
+		if (item.getGroup() != ItemTable.GROUP.REFUELING) {
+			for (ItemTable balance : balances) {
+				if (balance.equals(item)) {
+					balance.setMoney(balance.getMoney() + item.getMoney());
+					if (balance.getGroup() == ItemTable.GROUP.EXPENSE) balance.setAmount(balance.getAmount() + 1);
+					if (balance.getGroup() == ItemTable.GROUP.REFUELING) balance.setAmount(balance.getAmount() + 1);
+					isSuccess = true;
+				}
 			}
 		}
 		if (!isSuccess) balances.add(item);
 		if (item.getGroup() == ItemTable.GROUP.REFUELING) {
 			refueling.add(item);
+		}
+	}
+
+	private void loadRefuelingArray() {
+		for (ItemTable balance : balances) {
+			if (balance.getGroup() == ItemTable.GROUP.REFUELING) {
+				refueling.add(balance);
+			}
 		}
 	}
 
@@ -241,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
 		Apr(4, MainActivity.context.getResources().getString(R.string.title_month_april)),
 		May(5, MainActivity.context.getResources().getString(R.string.title_month_may)),
 		June(6, MainActivity.context.getResources().getString(R.string.title_month_june)),
-		Jule(7, MainActivity.context.getResources().getString(R.string.title_month_july)),
+		July(7, MainActivity.context.getResources().getString(R.string.title_month_july)),
 		Aug(8, MainActivity.context.getResources().getString(R.string.title_month_august)),
 		Sept(9, MainActivity.context.getResources().getString(R.string.title_month_september)),
 		Oct(10, MainActivity.context.getResources().getString(R.string.title_month_october)),

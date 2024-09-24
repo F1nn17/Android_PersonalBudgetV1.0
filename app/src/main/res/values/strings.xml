@@ -24,7 +24,7 @@
 	<string name="table_date_refueling">Date</string>
 
 	<string name="toolbar_refueling_expense">Expense</string>
-	<string name="toolbar_refueling_graph">Graph</string>
+	<string name="toolbar_refueling_graph">Stats</string>
 	<string name="toolbar_refueling_setting">Setting</string>
 
 	<string name="previous_month">previous month</string>
@@ -58,12 +58,14 @@
 	<string name="DataTables">Data Tables</string>
 	<string name="ButtonClearDataTables">Clear Data Tables</string>
 
-	<!-- TODO: Remove or change this placeholder text -->
-	<string name="hello_blank_fragment">Hello graph fragment</string>
 	<string name="fuel">Fuel</string>
 	<string name="price">Price</string>
 	<string name="r_l">rub/litr</string>
 	<string name="edit_refuelsettings">edit</string>
 	<string name="accept_refuelsettings">accept</string>
+	<string name="litres">l</string>
+	<string name="graph_stats_costs">Costs</string>
+	<string name="graph_stats_litres">Litres</string>
+	<string name="graph_stats_refuelings">Refuelings</string>
 
 </resources>

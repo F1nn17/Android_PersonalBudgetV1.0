@@ -1,5 +1,6 @@
 package com.shiromadev.personalbudget.ui.refueling;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -50,6 +51,7 @@ public class RefuelingExpenseFragment extends Fragment {
 		super.onResume();
 	}
 
+	@SuppressLint("SetTextI18n")
 	private void loadViewRefueling() {
 		tableRows.add(0, new TableRow(getContext()));
 		tableTextProduct.add(0, new TextView(getContext()));
@@ -87,14 +89,15 @@ public class RefuelingExpenseFragment extends Fragment {
 					TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
 
 				tableTextAmount.add(k, new TextView(getContext()));
-				tableTextAmount.get(k).setText("95");
+				tableTextAmount.get(k).setText(MainActivity.getBalances().get(i).getLiters() + getString(R.string.litres));
 				tableTextAmount.get(k).setTextSize(22);
 				tableTextAmount.get(k).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 				tableRows.get(k).addView(tableTextAmount.get(k), new TableRow.LayoutParams(
 					TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.75f));
 
 				tableTextMoney.add(k, new TextView(getContext()));
-				tableTextMoney.get(k).setText(MainActivity.getDate().toLocalDate().toString());
+
+				tableTextMoney.get(k).setText(MainActivity.getBalances().get(i).getData().toLocalDate().toString());
 				tableTextMoney.get(k).setTextSize(22);
 				tableTextMoney.get(k).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 				tableRows.get(k).addView(tableTextMoney.get(k), new TableRow.LayoutParams(

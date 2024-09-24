@@ -80,6 +80,7 @@ public class RefuelingSettingsFragment extends Fragment {
 				loadSettings();
 				MainActivity.saveSettings();
 				hideKeyboardFrom(root.getContext(), v);
+				MainActivity.recalculationLitres();
 			}
 		});
 

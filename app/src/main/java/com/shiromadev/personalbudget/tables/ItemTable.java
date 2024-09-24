@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -14,6 +15,8 @@ public class ItemTable implements Serializable {
 	private int money;
 	private int amount;
 	private int month;
+	private LocalDateTime data;
+	private String liters;
 
 	@Override
 	public boolean equals(Object obj) {

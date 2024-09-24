@@ -91,6 +91,8 @@
 			android:padding="8dp"
 		/>
 		<Button
+			android:backgroundTint="#FFAA00"
+			android:textColor="@color/black"
 			android:layout_marginStart="20dp"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -103,6 +105,8 @@
 			android:id="@+id/editButton"
 		/>
 		<Button
+			android:backgroundTint="#FFAA00"
+			android:textColor="@color/black"
 			android:layout_marginStart="20dp"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

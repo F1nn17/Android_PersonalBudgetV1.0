@@ -2,6 +2,7 @@ package com.shiromadev.personalbudget.ui.refueling;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +27,9 @@ public class RefuelingFragment extends Fragment implements View.OnClickListener 
 		MainActivity.setFlag(flag);
 		binding = FragmentRefuelingBinding.inflate(inflater, container, false);
 		View root = binding.getRoot();
-		Button expenseButt = (Button) root.findViewById(R.id.butt_expense);
-		Button graphButt = (Button) root.findViewById(R.id.butt_graph);
-		Button settingsButt = (Button) root.findViewById(R.id.butt_setting);
+		ImageButton expenseButt = (ImageButton) root.findViewById(R.id.butt_expense);
+		ImageButton graphButt = (ImageButton) root.findViewById(R.id.butt_graph);
+		ImageButton settingsButt = (ImageButton) root.findViewById(R.id.butt_setting);
 		expenseButt.setOnClickListener(this);
 		graphButt.setOnClickListener(this);
 		settingsButt.setOnClickListener(this);
