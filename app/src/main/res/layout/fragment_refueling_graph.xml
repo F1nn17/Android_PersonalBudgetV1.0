@@ -3,6 +3,7 @@
 			 xmlns:tools="http://schemas.android.com/tools"
 			 android:layout_width="match_parent"
 			 android:layout_height="match_parent"
+			 xmlns:app="http://schemas.android.com/apk/res-auto"
 			 tools:context=".ui.refueling.RefuelingGraphFragment"
 			 android:background="@color/ffbf40">
 	<LinearLayout
@@ -13,6 +14,27 @@
 		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
 			android:layout_height="300dp">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical"
+			>
+				<com.shiromadev.personalbudget.api.view.piechart.APCRefueling
+					android:id="@+id/apc_refueling"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:pieChartColors="@array/analyticalPieChartColorArray"
+					app:pieChartTextAmountColor="@color/black"
+					app:pieChartTextNumberColor="@color/black"
+					app:pieChartTextDescriptionColor="?android:attr/textColorHint"
+					app:pieChartTextNumberSize="16sp"
+					app:pieChartTextDescriptionSize="14sp"
+					app:pieChartTextAmount="@string/analyticalPieChartAmount"
+					app:pieChartCircleStrokeWidth="6dp"
+					app:pieChartCircleSectionSpace="2"
+					android:layout_margin="15dp"
+				/>
+			</LinearLayout>
 		</androidx.constraintlayout.widget.ConstraintLayout>
 		<TableLayout
 			android:layout_width="match_parent"
@@ -99,7 +121,7 @@
 				<TextView
 					android:background="@drawable/stats_text"
 					android:textSize="24sp"
-					android:text="..."
+					android:text="@string/coming_soon"
 					android:layout_width="150dp"
 					android:layout_height="wrap_content"
 					android:textAlignment="center"
@@ -112,6 +134,8 @@
 					android:id="@+id/stats"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:text="@string/coming_soon"
+					tools:ignore="HardcodedText"
 				/>
 			</TableRow>
 		</TableLayout>

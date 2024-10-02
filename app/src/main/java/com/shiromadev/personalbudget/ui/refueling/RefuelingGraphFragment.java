@@ -8,10 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.shiromadev.personalbudget.MainActivity;
 import com.shiromadev.personalbudget.R;
+import com.shiromadev.personalbudget.api.util.ConvertListKt;
 import com.shiromadev.personalbudget.databinding.FragmentRefuelingExpenseBinding;
 import com.shiromadev.personalbudget.databinding.FragmentRefuelingGraphBinding;
 import com.shiromadev.personalbudget.tables.ItemTable;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RefuelingGraphFragment extends Fragment {
 
@@ -50,11 +55,24 @@ public class RefuelingGraphFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		List<AbstractMap.SimpleEntry<Integer, String>> list = new ArrayList<>();
+		list.add(new AbstractMap.SimpleEntry<>(costs, getResources().getString(R.string.graph_stats_costs)));
+		list.add(new AbstractMap.SimpleEntry<>(Math.round(litres), getResources().getString(R.string.graph_stats_litres)));
+		binding.apcRefueling.setDataChart(
+			ConvertListKt.convert(list)
+		);
+		binding.apcRefueling.startAnimation();
+	}
+
 	private void UpdateView() {
 		Calculation();
 		statsCosts.setText(String.valueOf(costs));
 		statsLitres.setText(String.valueOf(litres));
 		statsAmountRefueling.setText(String.valueOf(amountRefueling));
+
 	}
 
 	@Override

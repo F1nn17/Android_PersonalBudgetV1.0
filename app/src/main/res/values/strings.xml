@@ -68,4 +68,14 @@
 	<string name="graph_stats_litres">Litres</string>
 	<string name="graph_stats_refuelings">Refuelings</string>
 
+	<string name="analyticalPieChartAmount">Total</string>
+	<string name="coming_soon">...</string>
+
+	<string-array name="analyticalPieChartColorArray">
+		<item>#E480F4</item>
+		<item>#6CC3F3</item>
+		<item>#7167ED</item>
+		<item>#D9455F</item>
+		<item>#6054EA</item>
+	</string-array>
 </resources>

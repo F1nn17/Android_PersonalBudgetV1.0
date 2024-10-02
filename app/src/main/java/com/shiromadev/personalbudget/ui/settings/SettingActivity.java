@@ -16,6 +16,7 @@ public class SettingActivity extends AppCompatActivity {
 
 	public void ClearDataTables(View view) {
 		MainActivity.getBalances().clear();
+		MainActivity.getRefueling().clear();
 		finish();
 	}
 

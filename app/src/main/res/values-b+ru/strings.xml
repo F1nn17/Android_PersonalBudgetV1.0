@@ -63,8 +63,18 @@
 	<string name="edit_refuelsettings">Изменить</string>
 	<string name="accept_refuelsettings">Применить</string>
     <string name="litres">л</string>
-    <string name="graph_stats_costs">Costs</string>
+	<string name="graph_stats_costs">Стоимость</string>
     <string name="graph_stats_litres">Литров</string>
     <string name="graph_stats_refuelings">Заправок</string>
 
+	<string name="analyticalPieChartAmount">Всего</string>
+	<string name="coming_soon">...</string>
+
+	<string-array name="analyticalPieChartColorArray">
+		<item>#E480F4</item>
+		<item>#6CC3F3</item>
+		<item>#7167ED</item>
+		<item>#D9455F</item>
+		<item>#6054EA</item>
+	</string-array>
 </resources>
