@@ -70,6 +70,13 @@
 
 	<string name="analyticalPieChartAmount">Total</string>
 	<string name="coming_soon">...</string>
+	<string name="back">back</string>
+	<string name="graph_balance">Analyze</string>
+	<string name="analyze_income">analyze income</string>
+	<string name="analyze_expense">analyze expense</string>
+	<string name="analyze_balance">analyze balance</string>
+	<string name="fullingincomes">Fulling Incomes</string>
+	<string name="fulling_expense">Fulling Expense</string>
 
 	<string-array name="analyticalPieChartColorArray">
 		<item>#E480F4</item>
@@ -77,5 +84,36 @@
 		<item>#7167ED</item>
 		<item>#D9455F</item>
 		<item>#6054EA</item>
+	</string-array>
+
+	<string-array name="APCColorArrayBalance">
+		<item>#CCF600</item>
+		<item>#FF0000</item>
+	</string-array>
+
+	<string-array name="APCColorArrayIncome">
+		<item>#DC143C</item>
+		<item>#FF0000</item>
+		<item>#B22222</item>
+		<item>#8B0000</item>
+		<item>#FF69B4</item>
+		<item>#FF1493</item>
+		<item>#C71585</item>
+		<item>#FF4500</item>
+		<item>#FF8C00</item>
+		<item>#FFA500</item>
+		<item>#FFD700</item>
+		<item>#FFFF00</item>
+		<item>#DA70D6</item>
+		<item>#FF00FF</item>
+		<item>#8A2BE2</item>
+		<item>#9400D3</item>
+		<item>#9932CC</item>
+		<item>#8B008B</item>
+		<item>#800080</item>
+		<item>#4B0082</item>
+		<item>#ADFF2F</item>
+		<item>#7FFF00</item>
+		<item>#7CFC00</item>
 	</string-array>
 </resources>

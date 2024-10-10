@@ -8,7 +8,6 @@ import android.text.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import com.shiromadev.personalbudget.MainActivity
 import com.shiromadev.personalbudget.R
 import com.shiromadev.personalbudget.api.util.dpToPx
 import com.shiromadev.personalbudget.api.util.spToPx
@@ -18,7 +17,7 @@ import com.shiromadev.personalbudget.api.view.piechart.model.AnalyticalPieChartS
 import com.shiromadev.personalbudget.api.view.staticlayout.draw
 
 
-class APCBalance @JvmOverloads constructor(
+class APCIncome @JvmOverloads constructor(
 	context: Context,
 	attrs: AttributeSet? = null,
 	defStyleAttr: Int = 0
@@ -42,8 +41,8 @@ class APCBalance @JvmOverloads constructor(
 		const val DEFAULT_VIEW_SIZE_WIDTH = 250
 	}
 
-	private var marginTextFirst: Float = context.dpToPx(DEFAULT_MARGIN_TEXT_1)
-	private var marginTextSecond: Float = context.dpToPx(DEFAULT_MARGIN_TEXT_2)
+	private var marginTextFirst: Float = context.dpToPx(1)
+	private var marginTextSecond: Float = context.dpToPx(1)
 	private var marginTextThird: Float = context.dpToPx(DEFAULT_MARGIN_TEXT_3)
 	private var marginSmallCircle: Float = context.dpToPx(DEFAULT_MARGIN_SMALL_CIRCLE)
 	private val marginText: Float = marginTextFirst + marginTextSecond
@@ -72,7 +71,6 @@ class APCBalance @JvmOverloads constructor(
 	private var percentageCircleList: List<AnalyticalPieChartModel> = listOf()
 	private var textRowList: MutableList<StaticLayout> = mutableListOf()
 	private var dataList: List<Pair<Int, String>> = listOf()
-	private var balance: Int = 0
 	private var animationSweepAngle: Int = 0
 
 	init {
@@ -181,11 +179,6 @@ class APCBalance @JvmOverloads constructor(
 		calculatePercentageOfData()
 	}
 
-	fun setBalance(balance: Int) {
-		this.balance = balance
-	}
-
-
 	override fun startAnimation() {
 		// Проход значений от 0 до 360 (целый круг), с длительностью - 1.5 секунды
 		val animator = ValueAnimator.ofInt(0, 360).apply {
@@ -218,7 +211,7 @@ class APCBalance @JvmOverloads constructor(
 	private fun drawText(canvas: Canvas) {
 		var textBuffY = textStartY
 		textRowList.forEachIndexed { index, staticLayout ->
-			if (index % 2 == 0) {
+			if (index % 2 == 0 && index < 12) {
 				staticLayout.draw(canvas, textStartX + marginSmallCircle + textCircleRadius, textBuffY)
 				canvas.drawCircle(
 					textStartX + marginSmallCircle / 2,
@@ -226,13 +219,11 @@ class APCBalance @JvmOverloads constructor(
 					textCircleRadius,
 					Paint().apply { color = Color.parseColor(pieChartColors[(index / 2) % pieChartColors.size]) }
 				)
+			} else if (index % 2 != 0 && index < 12) {
+				staticLayout.draw(canvas, textStartX + 200, textBuffY)
 				textBuffY += staticLayout.height + marginTextFirst
-			} else {
-				staticLayout.draw(canvas, textStartX, textBuffY)
-				textBuffY += staticLayout.height + marginTextSecond
 			}
 		}
-
 		canvas.drawText(totalAmount.toString(), textAmountXNumber, textAmountY, amountTextPaint)
 		canvas.drawText(textAmountStr, textAmountXDescription, textAmountYDescription, descriptionTextPain)
 	}
@@ -291,7 +282,7 @@ class APCBalance @JvmOverloads constructor(
 	}
 
 	private fun getTextViewHeight(maxWidth: Int): Int {
-		var textHeight = 0
+		val textHeight = 250
 		dataList.forEach {
 			val textLayoutNumber = getMultilineText(
 				text = it.first.toString(),
@@ -307,27 +298,20 @@ class APCBalance @JvmOverloads constructor(
 				add(textLayoutNumber)
 				add(textLayoutDescription)
 			}
-			textHeight += textLayoutNumber.height + textLayoutDescription.height
+			//textHeight += textLayoutNumber.height + textLayoutDescription.height
 		}
 
 		return textHeight
 	}
 
 	private fun calculatePercentageOfData() {
-		totalAmount = balance
+		totalAmount = dataList.size
+		var totalMoney = dataList.fold(0) { res, value -> res + value.first }
 		var startAt = circleSectionSpace
-		val percentFull = 100.0F
-		var expensePercent = (dataList[1].first.toFloat() / dataList[0].first.toFloat()) * percentFull
-		expensePercent =
-			if (expensePercent < 1 && expensePercent > 0) 8F else if (expensePercent < 0) 0F else expensePercent
-		val incomePercent = percentFull - expensePercent
-		percentageCircleList = List(dataList.size) { index ->
-			var percent = 0F
-			when (index) {
-				0 -> percent = incomePercent
-				1 -> percent = expensePercent
-			}
-			if (percent != 0F) percent -= circleSectionSpace
+		percentageCircleList = dataList.mapIndexed { index, pair ->
+			var percent = (pair.first / totalMoney.toFloat()) * 100.0F - circleSectionSpace
+			percent = if (percent < 0F) 0F else percent
+
 			val resultModel = AnalyticalPieChartModel(
 				percentOfCircle = percent,
 				percentToStartAt = startAt,

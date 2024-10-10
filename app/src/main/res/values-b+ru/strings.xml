@@ -49,7 +49,7 @@
     <string name="title_month_july">Июль</string>
     <string name="title_month_august">Август</string>
     <string name="title_month_september">Сентябрь</string>
-    <string name="title_month_october">Октрябрь</string>
+	<string name="title_month_october">Октябрь</string>
     <string name="title_month_november">Ноябрь</string>
     <string name="title_month_december">Декабрь</string>
 
@@ -69,6 +69,13 @@
 
 	<string name="analyticalPieChartAmount">Всего</string>
 	<string name="coming_soon">...</string>
+	<string name="back">Назад</string>
+	<string name="graph_balance">Анализ</string>
+	<string name="analyze_income">analyze income</string>
+	<string name="analyze_expense">analyze expense</string>
+	<string name="analyze_balance">analyze balance</string>
+	<string name="fullingincomes">Fulling Incomes</string>
+	<string name="fulling_expense">Fulling Expense</string>
 
 	<string-array name="analyticalPieChartColorArray">
 		<item>#E480F4</item>
