@@ -67,7 +67,7 @@
     <string name="graph_stats_litres">Литров</string>
     <string name="graph_stats_refuelings">Заправок</string>
 
-	<string name="analyticalPieChartAmount">Всего</string>
+	<string name="analyticalPieChartAmount">Осталось</string>
 	<string name="coming_soon">...</string>
 	<string name="back">Назад</string>
 	<string name="graph_balance">Анализ</string>

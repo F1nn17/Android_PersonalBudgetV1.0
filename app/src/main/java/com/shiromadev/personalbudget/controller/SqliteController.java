@@ -18,7 +18,7 @@ import java.util.Arrays;
 @Getter
 public class SqliteController extends SQLiteOpenHelper {
 	private static final String NAME_DB = "balance.db";
-	private static final int SCHEMA = 5;
+	private static final int SCHEMA = 7;
 
 	private static final String TABLE_NAME = "balances";
 	private static final String COLUMN_ID = "_id";
@@ -29,6 +29,9 @@ public class SqliteController extends SQLiteOpenHelper {
 	private static final String COLUMN_MONTH = "month";
 	private static final String COLUMN_DATA = "data";
 	private static final String COLUMN_LITRES = "litres";
+
+	private static final String COLUMNS = COLUMN_GROUP + " , " + COLUMN_NAME + " , " + COLUMN_PRICE + " , "
+		+ COLUMN_AMOUNT + " , " + COLUMN_MONTH + " , " + COLUMN_DATA + " , " + COLUMN_LITRES;
 
 	String[] headers = new String[]{COLUMN_NAME, COLUMN_GROUP, COLUMN_PRICE, COLUMN_AMOUNT, COLUMN_MONTH, COLUMN_DATA, COLUMN_LITRES};
 
@@ -52,114 +55,50 @@ public class SqliteController extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	private void deleteTable(SQLiteDatabase db) {
-		db.execSQL("DELETE FROM " + TABLE_NAME);
-	}
-
-	public void loadTable(SQLiteDatabase db, ArrayList<ItemTable> allItems, ArrayList<ItemTable> tables) {
-		try {
-			int month = MainActivity.getMonth();
-			deleteTable(db);
-			boolean isSuccess;
-			if (!allItems.isEmpty() && !tables.isEmpty()) {
-				for (ItemTable itemAll : allItems) {
-					isSuccess = false;
-					for (ItemTable itemTable : tables) {
-						if (itemAll.getMonth() == month && itemTable.getMonth() == month) {
-							if (itemAll.equals(itemTable)) {
-								itemAll.setMoney(itemTable.getMoney());
-								isSuccess = true;
-							}
-						} else {
-							allItems.add(itemTable);
-						}
-						if (!isSuccess) allItems.add(itemTable);
-					}
+	public void unloadTable(SQLiteDatabase db, ArrayList<ItemTable> tables) {
+		try (db) {
+			if (!tables.isEmpty()) {
+				db.execSQL("DELETE FROM " + TABLE_NAME);
+				ContentValues values = new ContentValues(tables.size());
+				for (ItemTable item : tables) {
+					values.put(COLUMN_GROUP, item.getGroup().getGROUP_NAME());
+					values.put(COLUMN_NAME, item.getName());
+					values.put(COLUMN_PRICE, item.getMoney());
+					values.put(COLUMN_AMOUNT, item.getAmount());
+					values.put(COLUMN_MONTH, item.getMonth());
+					values.put(COLUMN_DATA, String.valueOf(item.getData()));
+					values.put(COLUMN_LITRES, item.getLiters());
+					db.insert(TABLE_NAME, null, values);
+					values.clear();
 				}
-			} else {
-				allItems.addAll(tables);
-			}
-			ContentValues values = new ContentValues();
-			for (ItemTable item : allItems) {
-				values.put(COLUMN_GROUP, item.getGroup().getGROUP_NAME());
-				values.put(COLUMN_NAME, item.getName());
-				values.put(COLUMN_PRICE, item.getMoney());
-				values.put(COLUMN_AMOUNT, item.getAmount());
-				values.put(COLUMN_MONTH, item.getMonth());
-				values.put(COLUMN_DATA, String.valueOf(item.getData()));
-				values.put(COLUMN_LITRES, item.getLiters());
-				db.insert(TABLE_NAME, null, values);
-				values.clear();
 			}
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 			System.out.println(e.getMessage());
 			System.out.println(Arrays.toString(e.getStackTrace()));
-		} finally {
-			db.close();
 		}
 	}
 
 	@SuppressLint({"Recycle", "Range"})
-	public ArrayList<ItemTable> unloadTable(SQLiteDatabase db, int month) {
+	public ArrayList<ItemTable> loadTable(SQLiteDatabase db) {
 		ArrayList<ItemTable> tables = new ArrayList<>();
-		Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_MONTH + " = " + month, null);
+		Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+		System.out.println("Всего записей = " + cursor.getCount());
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			String searchGroup = cursor.getString(cursor.getColumnIndex(COLUMN_GROUP));
-			ItemTable.GROUP group = ItemTable.GROUP.INCOME;
-			switch (searchGroup) {
-				case "expense":
-					group = ItemTable.GROUP.EXPENSE;
-					break;
-				case "balance":
-					group = ItemTable.GROUP.BALANCE;
-					break;
-				case "refueling":
-					group = ItemTable.GROUP.REFUELING;
-					break;
-			}
+			ItemTable.GROUP group = switch (searchGroup) {
+				case "expense" -> ItemTable.GROUP.EXPENSE;
+				case "balance" -> ItemTable.GROUP.BALANCE;
+				case "refueling" -> ItemTable.GROUP.REFUELING;
+				default -> ItemTable.GROUP.INCOME;
+			};
 			String dataString = cursor.getString(cursor.getColumnIndex(COLUMN_DATA));
 			LocalDateTime data;
 			if (dataString.equals("null")) data = null;
 			else data = LocalDateTime.parse(dataString);
 			tables.add(createItem(group,
 				cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
-				cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE)),
-				cursor.getInt(cursor.getColumnIndex(COLUMN_AMOUNT)),
-				cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH)),
-				data,
-				cursor.getString(cursor.getColumnIndex(COLUMN_LITRES))));
-			cursor.moveToNext();
-		}
-		db.close();
-		return tables;
-	}
-
-	@SuppressLint({"Recycle", "Range"})
-	public ArrayList<ItemTable> getAllItems(SQLiteDatabase db) {
-		ArrayList<ItemTable> tables = new ArrayList<>();
-		Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			String searchGroup = cursor.getString(cursor.getColumnIndex(COLUMN_GROUP));
-			ItemTable.GROUP group = ItemTable.GROUP.INCOME;
-			switch (searchGroup) {
-				case "expense":
-					group = ItemTable.GROUP.EXPENSE;
-					break;
-				case "balance":
-					group = ItemTable.GROUP.BALANCE;
-					break;
-				case "refueling":
-					group = ItemTable.GROUP.REFUELING;
-					break;
-			}
-			String dataString = cursor.getString(cursor.getColumnIndex(COLUMN_DATA));
-			LocalDateTime data;
-			if (dataString.equals("null")) data = null;
-			else data = LocalDateTime.parse(dataString);
-			tables.add(createItem(group, cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
 				cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE)),
 				cursor.getInt(cursor.getColumnIndex(COLUMN_AMOUNT)),
 				cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH)),

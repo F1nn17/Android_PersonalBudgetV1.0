@@ -15,19 +15,13 @@ public class SQLiteControllerHelper {
 		sqliteController = new SqliteController(context);
 	}
 
-	public void loadTable(ArrayList<ItemTable> tables) {
-		ArrayList<ItemTable> allItems = getAllItems();
+	public void unloadTable(ArrayList<ItemTable> tables) {
 		database = sqliteController.getWritableDatabase();
-		sqliteController.loadTable(database, allItems, tables);
+		sqliteController.unloadTable(database, tables);
 	}
 
-	protected ArrayList<ItemTable> getAllItems() {
+	public ArrayList<ItemTable> loadTable() {
 		database = sqliteController.getReadableDatabase();
-		return sqliteController.getAllItems(database);
-	}
-
-	public ArrayList<ItemTable> unloadTable(int month) {
-		database = sqliteController.getReadableDatabase();
-		return sqliteController.unloadTable(database, month);
+		return sqliteController.loadTable(database);
 	}
 }

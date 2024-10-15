@@ -125,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
 	public void unLoadData() {
 		System.out.println("Start unload data database....");
-		sqlHelper.loadTable(balances);
 		JSONHelper.export(this, refuelingSetting);
+		sqlHelper.unloadTable(balances);
 		System.out.println("Unload success!");
 	}
 
@@ -143,10 +143,17 @@ public class MainActivity extends AppCompatActivity {
 	public void loadData() {
 		System.out.println("Start load data database....");
 		refuelingSetting = JSONHelper.importSetting(this);
-		balances = sqlHelper.unloadTable(month);
+		balances = sqlHelper.loadTable();
+
+		for (ItemTable item : balances) {
+			System.out.println(item);
+			System.out.println(item.getMonth());
+		}
+
 		loadRefuelingArray();
 		System.out.println("Load success!");
 	}
+
 	@Getter
 	private static int expense = 0;
 	@Getter
@@ -231,6 +238,9 @@ public class MainActivity extends AppCompatActivity {
 					.name(Months.Search.getMonths(month))
 					.month(month)
 					.money(balance)
+					.data(null)
+					.amount(0)
+					.liters("0")
 					.build());
 			}
 			recalculationLitres();
