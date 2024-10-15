@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/mobile_navigation"
-            app:startDestination="@+id/nav_income">
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:id="@+id/mobile_navigation"
+			app:startDestination="@+id/nav_income">
 
-    <fragment
-            android:id="@+id/nav_income"
-            android:name="com.shiromadev.personalbudget.ui.income.IncomeFragment"
-            android:label="@string/menu_income"
-            tools:layout="@layout/fragment_income"/>
-
-    <fragment
-            android:id="@+id/nav_expense"
-            android:name="com.shiromadev.personalbudget.ui.expense.ExpenseFragment"
-            android:label="@string/menu_expense"
-            tools:layout="@layout/fragment_expense"/>
-
-    <fragment
-            android:id="@+id/nav_balance"
-            android:name="com.shiromadev.personalbudget.ui.balance.BalanceFragment"
-            android:label="@string/menu_balance"
-            tools:layout="@layout/fragment_balance"/>
+	<fragment
+		android:id="@+id/nav_income"
+		android:name="com.shiromadev.personalbudget.ui.income.IncomeFragment"
+		android:label="@string/menu_income"
+		tools:layout="@layout/fragment_income"/>
+	<fragment
+		android:id="@+id/nav_expense"
+		android:name="com.shiromadev.personalbudget.ui.expense.ExpenseFragment"
+		android:label="@string/menu_expense"
+		tools:layout="@layout/fragment_expense"/>
+	<fragment
+		android:id="@+id/nav_balance"
+		android:name="com.shiromadev.personalbudget.ui.balance.BalanceFragment"
+		android:label="@string/menu_balance"
+		tools:layout="@layout/fragment_balance"/>
+	<fragment
+		android:id="@+id/nav_analyze_balance"
+		android:name="com.shiromadev.personalbudget.ui.graphbalance.AnalyzeBalance"
+		android:label="@string/graph_balance"
+		tools:layout="@layout/fragment_analyze_balance"/>
+	<fragment
+		android:id="@+id/nav_refueling"
+		android:name="com.shiromadev.personalbudget.ui.refueling.RefuelingFragment"
+		android:label="@string/menu_refueling"
+		tools:layout="@layout/fragment_refueling"/>
 </navigation>

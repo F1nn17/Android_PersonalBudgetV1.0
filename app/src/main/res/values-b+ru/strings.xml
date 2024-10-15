@@ -19,11 +19,20 @@
     <string name="table_month_balance">Месяц</string>
     <string name="table_balance_balance">Баланс</string>
 
+    <string name="table_expense_refueling">Расход</string>
+    <string name="table_fuel_refueling">Топливо</string>
+    <string name="table_date_refueling">Дата</string>
+
+    <string name="toolbar_refueling_expense">Расход</string>
+    <string name="toolbar_refueling_graph">Статистика</string>
+    <string name="toolbar_refueling_setting">Настроить</string>
+
     <string name="previous_month">предыдущий месяц</string>
 
     <string name="menu_income">Доход</string>
     <string name="menu_expense">Расход</string>
     <string name="menu_balance">Баланс</string>
+    <string name="menu_refueling">Заправка</string>
     <string name="addIncome">Добавить</string>
     <string name="moneyIncome">Деньги +</string>
     <string name="nameIncome">Имя</string>
@@ -31,9 +40,48 @@
     <string name="productExpense">Продукт</string>
     <string name="title_activity_settings">Настройки</string>
 
+    <string name="title_month_january">Январь</string>
+    <string name="title_month_february">Февраль</string>
+    <string name="title_month_march">Март</string>
+    <string name="title_month_april">Апрель</string>
+    <string name="title_month_may">Май</string>
+    <string name="title_month_june">Июнь</string>
+    <string name="title_month_july">Июль</string>
+    <string name="title_month_august">Август</string>
+    <string name="title_month_september">Сентябрь</string>
+	<string name="title_month_october">Октябрь</string>
+    <string name="title_month_november">Ноябрь</string>
+    <string name="title_month_december">Декабрь</string>
+
     <string name="et_name_product"> </string>
     <string name="et_money_product"> </string>
     <string name="DataTables">Данные таблиц</string>
     <string name="ButtonClearDataTables">Удалить данные таблиц</string>
+	<string name="fuel">Топливо</string>
+	<string name="price">Цена</string>
+	<string name="r_l">Руб/Литр</string>
+	<string name="edit_refuelsettings">Изменить</string>
+	<string name="accept_refuelsettings">Применить</string>
+    <string name="litres">л</string>
+	<string name="graph_stats_costs">Стоимость</string>
+    <string name="graph_stats_litres">Литров</string>
+    <string name="graph_stats_refuelings">Заправок</string>
 
+	<string name="analyticalPieChartAmount">Осталось</string>
+	<string name="coming_soon">...</string>
+	<string name="back">Назад</string>
+	<string name="graph_balance">Анализ</string>
+	<string name="analyze_income">analyze income</string>
+	<string name="analyze_expense">analyze expense</string>
+	<string name="analyze_balance">analyze balance</string>
+	<string name="fullingincomes">Fulling Incomes</string>
+	<string name="fulling_expense">Fulling Expense</string>
+
+	<string-array name="analyticalPieChartColorArray">
+		<item>#E480F4</item>
+		<item>#6CC3F3</item>
+		<item>#7167ED</item>
+		<item>#D9455F</item>
+		<item>#6054EA</item>
+	</string-array>
 </resources>

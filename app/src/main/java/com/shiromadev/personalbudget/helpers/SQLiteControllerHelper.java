@@ -8,21 +8,20 @@ import com.shiromadev.personalbudget.tables.ItemTable;
 import java.util.ArrayList;
 
 public class SQLiteControllerHelper {
-    private SQLiteDatabase database;
+	private final SqliteController sqliteController;
+	private SQLiteDatabase database;
 
-    private final SqliteController sqliteController;
+	public SQLiteControllerHelper(Context context) {
+		sqliteController = new SqliteController(context);
+	}
 
-    public SQLiteControllerHelper(Context context) {
-        sqliteController = new SqliteController(context);
-    }
+	public void unloadTable(ArrayList<ItemTable> tables) {
+		database = sqliteController.getWritableDatabase();
+		sqliteController.unloadTable(database, tables);
+	}
 
-    public void loadTable(ArrayList<ItemTable> tables){
-        database = sqliteController.getWritableDatabase();
-        sqliteController.loadTable(database, tables);
-    }
-
-    public ArrayList<ItemTable> unloadTable(){
-        database = sqliteController.getReadableDatabase();
-        return sqliteController.unloadTable(database);
-    }
+	public ArrayList<ItemTable> loadTable() {
+		database = sqliteController.getReadableDatabase();
+		return sqliteController.loadTable(database);
+	}
 }

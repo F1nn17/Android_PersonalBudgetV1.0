@@ -19,4 +19,6 @@
     </style>
     <style name="Theme.PersonalBudget.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="Theme.PersonalBudget.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+
 </resources>
