@@ -49,8 +49,11 @@ public class MainActivity extends AppCompatActivity {
 	@Getter
 	private static ArrayList<ItemTable> refueling = new ArrayList<>();
 	//Local date
-	@Getter
+
 	private static LocalDateTime date = LocalDateTime.now();
+	@Getter
+	private static String dateFormat;
+	@Getter
 	private static SQLiteControllerHelper sqlHelper;
 	@Getter
 	private static ArrayList<ItemTable> balances = new ArrayList<>();
@@ -144,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
 		System.out.println("Start load data database....");
 		refuelingSetting = JSONHelper.importSetting(this);
 		balances = sqlHelper.loadTable();
-
 		for (ItemTable item : balances) {
 			System.out.println(item);
 			System.out.println(item.getMonth());
@@ -153,16 +155,24 @@ public class MainActivity extends AppCompatActivity {
 		loadRefuelingArray();
 		System.out.println("Load success!");
 	}
-
 	@Getter
 	private static int expense = 0;
 	@Getter
 	private static int balance = 0;
 
+	@SuppressLint("DefaultLocale")
+	private void setDateFormat() {
+		dateFormat = String.format("%d.%d.%d",
+			date.getDayOfMonth(),
+			month,
+			date.getYear());
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = this;
+		setDateFormat();
 		try {
 			sqlHelper = new SQLiteControllerHelper(getApplicationContext());
 		} catch (Exception e) {
@@ -211,13 +221,13 @@ public class MainActivity extends AppCompatActivity {
 		balance = 0;
 		if (!balances.isEmpty()) {
 			for (ItemTable item : balances) {
-				if (item.getGroup() == ItemTable.GROUP.INCOME) {
+				if (item.getGroup() == ItemTable.GROUP.INCOME && item.getMonth() == month) {
 					income += item.getMoney();
 				}
-				if (item.getGroup() == ItemTable.GROUP.EXPENSE) {
+				if (item.getGroup() == ItemTable.GROUP.EXPENSE && item.getMonth() == month) {
 					expense += item.getMoney();
 				}
-				if (item.getGroup() == ItemTable.GROUP.REFUELING) {
+				if (item.getGroup() == ItemTable.GROUP.REFUELING && item.getMonth() == month) {
 					expense += item.getMoney();
 				}
 			}

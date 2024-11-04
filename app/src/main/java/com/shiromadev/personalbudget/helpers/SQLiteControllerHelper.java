@@ -24,4 +24,9 @@ public class SQLiteControllerHelper {
 		database = sqliteController.getReadableDatabase();
 		return sqliteController.loadTable(database);
 	}
+
+	public void DeleteAll() {
+		database = sqliteController.getWritableDatabase();
+		sqliteController.deleteAll(database);
+	}
 }

@@ -97,7 +97,7 @@ public class RefuelingExpenseFragment extends Fragment {
 
 				tableTextMoney.add(k, new TextView(getContext()));
 
-				tableTextMoney.get(k).setText(MainActivity.getBalances().get(i).getData().toLocalDate().toString());
+				tableTextMoney.get(k).setText(MainActivity.getBalances().get(i).getData());
 				tableTextMoney.get(k).setTextSize(22);
 				tableTextMoney.get(k).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 				tableRows.get(k).addView(tableTextMoney.get(k), new TableRow.LayoutParams(

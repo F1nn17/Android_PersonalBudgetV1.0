@@ -41,14 +41,14 @@ public class BalanceFragment extends Fragment {
 		tableTextMonth.get(0).setTextSize(22);
 		tableTextMonth.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 		tableRows.get(0).addView(tableTextMonth.get(0), new TableRow.LayoutParams(
-			TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
+			TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
 
 		tableTextMoney.add(0, new TextView(getContext()));
 		tableTextMoney.get(0).setText(getResources().getString(R.string.table_balance_balance));
 		tableTextMoney.get(0).setTextSize(22);
 		tableTextMoney.get(0).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 		tableRows.get(0).addView(tableTextMoney.get(0), new TableRow.LayoutParams(
-			TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
+			TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
 
 		tableLayout.addView(tableRows.get(0));
 
@@ -61,14 +61,14 @@ public class BalanceFragment extends Fragment {
 				tableTextMonth.get(k).setTextSize(22);
 				tableTextMonth.get(k).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 				tableRows.get(k).addView(tableTextMonth.get(k), new TableRow.LayoutParams(
-					TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
+					TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
 
 				tableTextMoney.add(k, new TextView(getContext()));
 				tableTextMoney.get(k).setText(String.valueOf(MainActivity.getBalances().get(i).getMoney()));
 				tableTextMoney.get(k).setTextSize(22);
 				tableTextMoney.get(k).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 				tableRows.get(k).addView(tableTextMoney.get(k), new TableRow.LayoutParams(
-					TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
+					TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
 
 				tableLayout.addView(tableRows.get(k));
 			}

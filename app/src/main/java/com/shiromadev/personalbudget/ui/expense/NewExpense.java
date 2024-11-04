@@ -53,7 +53,7 @@ public class NewExpense extends AppCompatActivity {
 			.amount(1)
 			.money(money)
 			.month(MainActivity.getMonth())
-			.data(MainActivity.getDate())
+			.data(MainActivity.getDateFormat())
 			.build();
 		if (expense.getGroup() == ItemTable.GROUP.REFUELING) {
 			DecimalFormat decimalFormat = new DecimalFormat("#.##");

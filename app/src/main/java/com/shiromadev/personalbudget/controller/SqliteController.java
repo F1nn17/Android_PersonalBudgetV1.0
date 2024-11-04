@@ -55,6 +55,11 @@ public class SqliteController extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
+	public void deleteAll(SQLiteDatabase db) {
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+		onCreate(db);
+	}
+
 	public void unloadTable(SQLiteDatabase db, ArrayList<ItemTable> tables) {
 		try (db) {
 			if (!tables.isEmpty()) {
@@ -82,7 +87,8 @@ public class SqliteController extends SQLiteOpenHelper {
 	@SuppressLint({"Recycle", "Range"})
 	public ArrayList<ItemTable> loadTable(SQLiteDatabase db) {
 		ArrayList<ItemTable> tables = new ArrayList<>();
-		Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+		Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME +
+			" WHERE " + COLUMN_MONTH + " = " + MainActivity.getMonth(), null);
 		System.out.println("Всего записей = " + cursor.getCount());
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -93,16 +99,12 @@ public class SqliteController extends SQLiteOpenHelper {
 				case "refueling" -> ItemTable.GROUP.REFUELING;
 				default -> ItemTable.GROUP.INCOME;
 			};
-			String dataString = cursor.getString(cursor.getColumnIndex(COLUMN_DATA));
-			LocalDateTime data;
-			if (dataString.equals("null")) data = null;
-			else data = LocalDateTime.parse(dataString);
 			tables.add(createItem(group,
 				cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
 				cursor.getInt(cursor.getColumnIndex(COLUMN_PRICE)),
 				cursor.getInt(cursor.getColumnIndex(COLUMN_AMOUNT)),
 				cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH)),
-				data,
+				cursor.getString(cursor.getColumnIndex(COLUMN_DATA)),
 				cursor.getString(cursor.getColumnIndex(COLUMN_LITRES))));
 			cursor.moveToNext();
 		}
@@ -110,7 +112,7 @@ public class SqliteController extends SQLiteOpenHelper {
 		return tables;
 	}
 
-	private ItemTable createItem(ItemTable.GROUP group, String name, int money, int amount, int month, LocalDateTime data, String liters) {
+	private ItemTable createItem(ItemTable.GROUP group, String name, int money, int amount, int month, String data, String liters) {
 		return ItemTable.builder()
 			.group(group)
 			.name(name)

@@ -15,7 +15,7 @@ public class ItemTable implements Serializable {
 	private int money;
 	private int amount;
 	private int month;
-	private LocalDateTime data;
+	private String data;
 	private String liters;
 
 	@Override
