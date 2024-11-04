@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+												   xmlns:app="http://schemas.android.com/apk/res-auto"
+												   xmlns:tools="http://schemas.android.com/tools"
+												   android:layout_width="match_parent"
+												   android:layout_height="match_parent"
+												   tools:context=".ui.graphbalance.AnalyzeIncome"
+												   android:id="@+id/frameLayout">
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintVertical_bias="0.0"
+		app:layout_constraintHorizontal_bias="0.0">
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="280dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintVertical_bias="0.0"
+			app:layout_constraintHorizontal_bias="0.0">
+			<com.shiromadev.personalbudget.api.view.piechart.APCIncome
+				android:layout_width="match_parent"
+				android:layout_height="250dp"
+				android:id="@+id/apcincome"
+				app:pieChartColors="@array/APCColorArrayIncome"
+				app:pieChartTextAmountColor="@color/black"
+				app:pieChartTextNumberColor="@color/black"
+				app:pieChartTextDescriptionColor="?android:attr/textColorHint"
+				app:pieChartTextNumberSize="12sp"
+				app:pieChartTextDescriptionSize="12sp"
+				app:pieChartTextAmount="@string/analyticalPieChartAmount"
+				app:pieChartCircleStrokeWidth="6dp"
+				app:pieChartCircleSectionSpace="2"
+				android:layout_margin="15dp"/>
+		</LinearLayout>
+		<include layout="@layout/income_view"
+				 android:id="@+id/layoutIncome"
+				 android:layout_width="match_parent"
+				 android:layout_height="250dp"
+		/>
+	</LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

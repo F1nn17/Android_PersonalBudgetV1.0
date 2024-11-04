@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			 xmlns:tools="http://schemas.android.com/tools"
+			 android:layout_width="match_parent"
+			 android:layout_height="match_parent"
+			 tools:context=".ui.graphbalance.AnalyzeBalance"
+			 android:background="@color/ffbf40"
+>
+
+	<FrameLayout
+		android:id="@+id/child_fragment_container"
+		android:layout_width="match_parent"
+		android:layout_height="614dp">
+	</FrameLayout>
+
+	<androidx.appcompat.widget.Toolbar
+		android:layout_width="match_parent"
+		android:layout_height="64dp"
+		android:theme="?attr/actionBarTheme"
+		android:minHeight="?attr/actionBarSize"
+		android:id="@+id/toolbar2"
+		android:layout_gravity="bottom"
+		android:layout_marginBottom="20dp">
+		<GridLayout android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginEnd="10dp">
+			<ImageButton
+				android:id="@+id/butt_income"
+				android:layout_width="64dp"
+				android:layout_height="64dp"
+				android:src="@mipmap/income_icon"
+				android:clickable="true"
+				android:background="@null"
+				android:contentDescription="@string/analyze_income"
+			/>
+			<ImageButton
+				android:id="@+id/butt_expense"
+				android:src="@mipmap/expense_icon"
+				android:layout_width="64dp"
+				android:layout_height="64dp"
+				android:background="@null"
+				android:layout_gravity="center_horizontal"
+				android:contentDescription="@string/analyze_expense"
+			/>
+			<ImageButton
+				android:id="@+id/butt_balance"
+				android:src="@mipmap/pie_chart_icon"
+				android:layout_width="64dp"
+				android:layout_height="64dp"
+				android:layout_marginEnd="20dp"
+				android:background="@null"
+				android:contentDescription="@string/analyze_balance"
+			/>
+		</GridLayout>
+	</androidx.appcompat.widget.Toolbar>
+
+
+</FrameLayout>
